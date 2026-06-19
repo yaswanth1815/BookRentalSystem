@@ -8,5 +8,5 @@ public interface BuyingRepository extends JpaRepository<Buying, Integer> {
 
     List<Buying> findByUsername(String username);
     List<Buying> findBySeller(String seller);
-    List<Buying> findByNameContaining(String name);
+    List<Buying> findByBookNameContaining(String name);
 }

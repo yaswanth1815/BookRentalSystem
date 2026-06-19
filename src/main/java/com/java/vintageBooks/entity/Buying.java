@@ -19,7 +19,7 @@ public class Buying {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
-    private String book_name;
+    private String bookName;
     private String author;
     private String pages;
     private String price;
