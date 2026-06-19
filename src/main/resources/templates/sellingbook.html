@@ -1,122 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vintage Books - Sell a Book</title>
+    <title>Seller Desk - Sell a Book</title>
     <style>
-        /* ==========================================================================
-           GLOBAL BASE STYLES (Shared Dashboard Architecture)
-           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        /* Prevent full-page scrolling to maintain application shell integrity */
-        body, html {
-            height: 100vh;
-            overflow: hidden;
+        html,
+        body {
+            min-height: 100vh;
             font-family: Arial, Helvetica, sans-serif;
-            background: #0b0f19;
+            background: #0f172a;
+            color: #f8fafc;
         }
 
-        /* Main viewport wrapper locked to 100vh with rich overlay background */
         body {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            width: 100%;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: clamp(10px, 2vw, 22px);
             background:
-                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
-                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
-            background-size: cover;
-            background-position: center;
+                radial-gradient(circle at 18% 10%, rgba(94, 234, 212, 0.35), transparent 34%),
+                linear-gradient(135deg, #0f172a, #3a2e5d 58%, #7f3f36);
         }
 
-        /* Single, unified app frame with deep premium dark-blue gradient */
         .page-box {
-            width: 100%;
-            max-width: 1140px;
-            height: calc(100vh - 32px);
-            max-height: calc(100vh - 32px);
+            width: min(1360px, 100%);
+            height: calc(100vh - clamp(20px, 4vw, 44px));
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: linear-gradient(145deg, #131a2c, #1a233d);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(18px);
         }
 
-        /* Universal Top Navbar Layout */
         nav {
-            background: #0d1220;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px clamp(18px, 3vw, 30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+        }
+
+        .brand {
+            white-space: nowrap;
+            font-size: 0.82rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
         }
 
         nav ul {
-            min-height: 60px;
+            min-width: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: clamp(14px, 3vw, 40px);
+            justify-content: flex-end;
+            gap: clamp(10px, 2.2vw, 28px);
             list-style: none;
-            padding: 10px 22px;
-            flex-wrap: wrap;
         }
 
         nav a {
-            color: #94a3b8;
-            font-size: 0.88rem;
-            font-weight: 700;
-            text-decoration: none;
+            white-space: nowrap;
+            color: #c4d3e7;
+            font-size: clamp(0.68rem, 0.95vw, 0.8rem);
+            font-weight: 800;
             text-transform: uppercase;
             transition: color 0.2s ease;
         }
 
         nav a:hover {
-            color: #38bdf8; /* Bright Blue Accent */
+            color: #5eead4;
         }
 
-        /* Base Scrollable Content Panel */
-        .content-scroller {
-            flex-grow: 1;
+        /* Form Page Layout Adjustments */
+        .content {
+            flex: 1 1 auto;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: clamp(16px, 2.7vw, 32px);
             overflow-y: auto;
-            padding: clamp(24px, 5vw, 44px) clamp(16px, 3vw, 28px);
+            scrollbar-width: thin;
+            scrollbar-color: rgba(94, 234, 212, 0.62) rgba(255, 255, 255, 0.08);
         }
 
-        /* Custom Scrollbars for smooth dark theme aesthetics */
-        .content-scroller::-webkit-scrollbar {
+        .content::-webkit-scrollbar {
             width: 8px;
         }
-        .content-scroller::-webkit-scrollbar-track {
-            background: #151d30;
-        }
-        .content-scroller::-webkit-scrollbar-thumb {
-            background: #293754;
-            border-radius: 4px;
-        }
-        .content-scroller::-webkit-scrollbar-thumb:hover {
-            background: #38bdf8;
+
+        .content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08);
         }
 
-        /* ==========================================================================
-           FORM DASHBOARD COMPONENTS
-           ========================================================================== */
+        .content::-webkit-scrollbar-thumb {
+            background: rgba(94, 234, 212, 0.62);
+            border-radius: 999px;
+        }
+
         .form-card {
-            max-width: 540px;
-            margin: 0 auto;
-            padding: clamp(22px, 5vw, 36px);
-            border-radius: 10px;
-            background: #151d30;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 560px;
+            margin: auto 0;
+            padding: clamp(20px, 4vw, 36px);
+            border-radius: 12px;
+            background: rgba(8, 13, 26, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
         }
 
         .form-header {
@@ -125,28 +137,30 @@
         }
 
         .form-header h1 {
-            font-size: clamp(1.6rem, 4vw, 2.2rem);
-            color: #ffffff;
-            font-weight: 800;
+            color: #f8fafc;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            line-height: 1.1;
             margin-bottom: 8px;
         }
 
         .form-header .lead {
-            color: #94a3b8;
-            font-size: 0.98rem;
+            color: #c4d3e7;
+            font-size: clamp(0.84rem, 1vw, 0.95rem);
             line-height: 1.5;
         }
 
         .form-row {
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #cbd5e1;
+            margin-bottom: 7px;
+            color: #5eead4; /* Teal accents for labels */
+            font-size: 0.74rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
         input[type="text"],
@@ -154,145 +168,163 @@
         select {
             width: 100%;
             min-height: 44px;
-            border: 1px solid #293754;
-            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 7px;
             padding: 10px 14px;
-            font-size: 0.95rem;
-            background: #0d1220;
-            color: #ffffff;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            font-size: 0.88rem;
+            background: rgba(15, 23, 42, 0.7);
+            color: #f8fafc;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* Focus states for input fields */
         input:focus,
         select:focus {
             outline: none;
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+            border-color: #5eead4;
+            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
         }
 
-        /* Custom style overrides for option dropdowns */
         select option {
-            background: #151d30;
-            color: #ffffff;
+            background: #0f172a;
+            color: #f8fafc;
         }
 
         input[type="submit"] {
             display: block;
             width: 100%;
+            min-height: 46px;
             border: none;
-            border-radius: 6px;
-            padding: 14px 18px;
-            background: #10b981; /* Premium Emerald Emerald */
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 1rem;
+            border-radius: 7px;
+            padding: 12px 18px;
+            background: #5eead4; /* Signature Teal color for submit */
+            color: #06201c;
+            font-weight: 900;
+            font-size: 0.88rem;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.08em;
             cursor: pointer;
             margin-top: 28px;
-            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 10px 24px rgba(94, 234, 212, 0.15);
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
 
         input[type="submit"]:hover {
-            background: #059669;
+            transform: translateY(-1px);
+            filter: brightness(1.08);
         }
 
         input[type="submit"]:active {
             transform: scale(0.99);
         }
 
-        /* ==========================================================================
-           RESPONSIVE BREAKPOINTS
-           ========================================================================== */
-        @media (max-width: 720px) {
-            body {
+        /* Responsive Breakpoints */
+        @media (max-width: 980px) {
+            .page-shell {
+                height: 100vh;
+            }
+
+            .page-box {
+                height: calc(100vh - 20px);
+            }
+
+            nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav ul {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .content {
+                padding: 24px 14px;
+            }
+            
+            .form-card {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page-shell {
                 padding: 8px;
             }
 
             .page-box {
-                height: calc(100vh - 16px);
-                max-height: calc(100vh - 16px);
+                border-radius: 14px;
             }
 
-            nav ul {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            nav a {
-                white-space: nowrap;
-            }
-
-            .content-scroller {
-                padding: 24px 14px;
+            .content {
+                padding: 16px 12px;
             }
         }
     </style>
 </head>
 <body>
 
-    <main class="page-box">
-        <!-- Navigation Bar -->
-        <nav>
-            <ul>
-                <li><a href="home.html">Home</a></li>
-                <li><a href="sellingbook.html">Sell a Book</a></li>
-                <li><a href="contactus.html">Contact Us</a></li>
-                <li><a href="orders.html">Orders</a></li>
-                <li><a href="profile.html">Profile</a></li>
-            </ul>
-        </nav>
+    <div class="page-shell">
+        <main class="page-box">
+            <nav>
+                <div class="brand">Seller Desk</div>
+                <ul>
+                    <li><a href="sellerhome.html">Home</a></li>
+                    <li><a href="sellingbook.html">Sell a Book</a></li>
+                    <li><a href="sellercontactus.html">Contact Us</a></li>
+                    <li><a href="sellerorders.html">Orders</a></li>
+                    <li><a href="sellerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
 
-        <!-- Dynamic Dashboard Container Viewport -->
-        <div class="content-scroller">
-            
-            <form class="form-card" method="post" action="sellingbook.html">
+            <div class="content">
                 
-                <div class="form-header">
-                    <h1>Enter Book Details</h1>
-                    <p class="lead">Add the book information that buyers will see.</p>
-                </div>
+                <form class="form-card" method="post" action="sellingbook.html">
+                    
+                    <div class="form-header">
+                        <h1>Enter Book Details</h1>
+                        <p class="lead">Add the book information that buyers will see.</p>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="bookname">Name of the book</label>
+                        <input type="text" id="bookname" name="bookname" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" name="author" required autocomplete="off">
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="pages">Pages</label>
+                        <input type="number" id="pages" name="pages" min="1" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="price">Price</label>
+                        <input type="number" id="price" name="price" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" min="1" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <label for="select">Listing Type</label>
+                        <select id="select" name="select">
+                            <option value="Sell">Selling</option>
+                            <option value="Donation">Donate</option>
+                        </select>
+                    </div>
+                    
+                    <input type="submit" name="submit" value="Submit Details">
+                </form>
                 
-                <div class="form-row">
-                    <label for="bookname">Name of the book</label>
-                    <input type="text" id="bookname" name="bookname" required autocomplete="off">
-                </div>
-                
-                <div class="form-row">
-                    <label for="author">Author</label>
-                    <input type="text" id="author" name="author" required autocomplete="off">
-                </div>
-                
-                <div class="form-row">
-                    <label for="pages">Pages</label>
-                    <input type="number" id="pages" name="pages" min="1" required>
-                </div>
-                
-                <div class="form-row">
-                    <label for="price">Price</label>
-                    <input type="number" id="price" name="price" min="0" step="0.01" required>
-                </div>
-                
-                <div class="form-row">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" min="1" required>
-                </div>
-                
-                <div class="form-row">
-                    <label for="select">Listing Type</label>
-                    <select id="select" name="select">
-                        <option value="Sell">Selling</option>
-                        <option value="Donation">Donate</option>
-                    </select>
-                </div>
-                
-                <input type="submit" name="submit" value="Submit Details">
-            </form>
-            
-        </div>
-    </main>
+            </div>
+        </main>
+    </div>
 
 </body>
 </html>

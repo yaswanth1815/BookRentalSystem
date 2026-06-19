@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Rental System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Absolutely locks down the viewport to prevent page scrolling */
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1f2937;
+            background:
+                linear-gradient(rgba(15, 23, 42, 0.62), rgba(15, 23, 42, 0.62)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .page {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .welcome {
+            width: min(1040px, 100%);
+            height: min(580px, 90vh); /* Hard ceiling to prevent card overflow */
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            overflow: hidden;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.96);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+        }
+
+        .intro {
+            height: 100%;
+            padding: 44px;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(31, 60, 88, 0.78), rgba(31, 60, 88, 0.78)),
+                url("https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1200&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .intro h1 {
+            max-width: 520px;
+            margin-bottom: 14px;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.05;
+        }
+
+        .intro p {
+            max-width: 540px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .actions {
+            padding: 44px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .role {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        .role h2 {
+            margin-bottom: 4px;
+            font-size: 1.35rem;
+            color: #111827;
+        }
+
+        .role p {
+            margin-bottom: 14px;
+            color: #6b7280;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            height: 42px;
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background 0.15s;
+        }
+
+        /* Seller Styles */
+        .seller .button {
+            color: #ffffff;
+            background: #2563eb;
+        }
+        .seller .button:hover {
+            background: #1d4ed8;
+        }
+        .seller .button.secondary {
+            color: #2563eb;
+            background: #eff6ff;
+        }
+        .seller .button.secondary:hover {
+            background: #dbeafe;
+        }
+
+        /* Buyer Styles */
+        .buyer .button {
+            color: #ffffff;
+            background: #0f766e;
+        }
+        .buyer .button:hover {
+            background: #0d5e58;
+        }
+        .buyer .button.secondary {
+            color: #0f766e;
+            background: #ecfdf5;
+        }
+        .buyer .button.secondary:hover {
+            background: #d1fae5;
+        }
+
+        /* Responsive design without vertical breaks */
+        @media (max-width: 768px) {
+            .welcome {
+                grid-template-columns: 1fr;
+                height: 95vh;
+            }
+
+            /* Drop the heavy side image block entirely on mobile to save vertical viewport spaces */
+            .intro {
+                display: none; 
+            }
+
+            .actions {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="welcome">
+            
+            <div class="intro">
+                <div class="brand">Book Rental System</div>
+                <div>
+                    <h1>Welcome to Vintage Books</h1>
+                    <p>Your gateway to preloved literary treasures. Choose how you want to enter the system and continue as a seller or buyer.</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <section class="role seller">
+                    <h2>Seller</h2>
+                    <p>List books, manage your rentals, and check buyer requests.</p>
+                    <div class="buttons">
+                        <a class="button" href="signin.html">Sign In</a>
+                        <a class="button secondary" href="signup.html">Sign Up</a>
+                    </div>
+                </section>
+
+                <section class="role buyer">
+                    <h2>Buyer</h2>
+                    <p>Browse available books, add items to your cart, and manage purchases.</p>
+                    <div class="buttons">
+                        <a class="button" href="buyersignin.html">Sign In</a>
+                        <a class="button secondary" href="buyersignup.html">Sign Up</a>
+                    </div>
+                </section>
+            </div>
+
+        </section>
+    </main>
+</body>
+</html>

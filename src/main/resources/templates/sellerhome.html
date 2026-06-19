@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Books - Home</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Glassmorphic Layout Structure)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        body {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .page-shell {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(10px, 2vw, 22px);
+            background:
+                radial-gradient(circle at 18% 10%, rgba(94, 234, 212, 0.35), transparent 34%),
+                linear-gradient(135deg, #0f172a, #3a2e5d 58%, #7f3f36);
+        }
+
+        .page-box {
+            width: min(1360px, 100%);
+            height: calc(100vh - clamp(20px, 4vw, 44px));
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(18px);
+        }
+
+        /* Top Navbar */
+        nav {
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px clamp(18px, 3vw, 30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+        }
+
+        .brand {
+            white-space: nowrap;
+            font-size: 0.82rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        nav ul {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: clamp(10px, 2.2vw, 28px);
+            list-style: none;
+        }
+
+        nav a {
+            white-space: nowrap;
+            color: #c4d3e7;
+            font-size: clamp(0.68rem, 0.95vw, 0.8rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #5eead4;
+        }
+
+        /* Inner Scrollable Dashboard Container */
+        .content-scroller {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: clamp(16px, 2.7vw, 32px);
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(94, 234, 212, 0.4) rgba(255, 255, 255, 0.05);
+        }
+
+        .content-scroller::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-scroller::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .content-scroller::-webkit-scrollbar-thumb {
+            background: rgba(94, 234, 212, 0.4);
+            border-radius: 999px;
+        }
+
+        .content-scroller::-webkit-scrollbar-thumb:hover {
+            background: #5eead4;
+        }
+
+        /* ==========================================================================
+           HOME DASHBOARD SPECIFIC COMPONENTS
+           ========================================================================== */
+        .hero {
+            padding: 10px 0 10px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #f8fafc;
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            color: #c4d3e7;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
+        }
+
+        /* Responsive Image Slider Carousel */
+        .slider-wrapper {
+            position: relative;
+            width: min(100%, 860px);
+            margin: 0 auto;
+        }
+
+        .slider {
+            display: flex;
+            aspect-ratio: 16 / 8.5;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider img {
+            width: 100%;
+            flex: 1 0 100%;
+            object-fit: cover;
+            scroll-snap-align: start;
+        }
+
+        .slider-nav {
+            position: absolute;
+            left: 50%;
+            bottom: 16px;
+            display: flex;
+            gap: 12px;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.7);
+            padding: 6px 14px;
+            border-radius: 999px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .slider-nav a {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ffffff;
+            opacity: 0.35;
+            transition: opacity 0.2s, background-color 0.2s;
+        }
+
+        .slider-nav a:hover,
+        .slider-nav a:focus {
+            opacity: 1;
+            background: #5eead4;
+        }
+
+        .lead {
+            max-width: 860px;
+            margin: 10px auto 4px;
+            font-size: clamp(1rem, 1.8vw, 1.12rem);
+            line-height: 1.7;
+            color: #cbd5e1;
+            text-align: center;
+        }
+
+        /* Dashboard Container Block Panel */
+        .section {
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+            padding: clamp(18px, 3vw, 28px);
+            border-radius: 12px;
+            background: rgba(8, 13, 26, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            color: #fbbf24;
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 12px;
+        }
+
+        .section-title svg {
+            width: 24px;
+            height: 24px;
+            fill: #fbbf24;
+        }
+
+        .feature {
+            margin-bottom: 22px;
+        }
+
+        .feature:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature h3 {
+            margin-bottom: 6px;
+            color: #f8fafc;
+            font-size: 1.08rem;
+            font-weight: 700;
+        }
+
+        .feature p {
+            color: #94a3b8;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        /* Footer Element Box */
+        footer {
+            max-width: 860px;
+            width: 100%;
+            margin: 12px auto 0;
+            padding: 28px 20px;
+            background: rgba(8, 13, 26, 0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            margin-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 14px;
+        }
+
+        .footer-links a {
+            color: #5eead4;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #fbbf24;
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE STRUCTURAL OVERRIDES
+           ========================================================================== */
+        @media (max-width: 980px) {
+            .page-shell {
+                height: 100vh;
+            }
+
+            .page-box {
+                height: calc(100vh - 20px);
+            }
+
+            nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav ul {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .content-scroller {
+                padding: 20px 14px;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                border-radius: 14px;
+            }
+
+            .content-scroller {
+                padding: 16px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <nav>
+                <div class="brand">Seller Desk</div>
+                <ul>
+                    <li><a href="sellerhome.html">Home</a></li>
+                    <li><a href="sellingbook.html">Sell a Book</a></li>
+                    <li><a href="sellercontactus.html">Contact Us</a></li>
+                    <li><a href="sellerorders.html">Orders</a></li>
+                    <li><a href="sellerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="content-scroller">
+                
+                <section class="hero">
+                    <h1>Welcome to Vintage Books</h1>
+                    <p>Your gateway to preloved literary treasures.</p>
+                </section>
+
+                <section class="slider-wrapper" aria-label="Featured vintage books">
+                    <div class="slider">
+                        <img id="img1" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000&auto=format&fit=crop" alt="Stack of classic leather books">
+                        <img id="img2" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1000&auto=format&fit=crop" alt="Open books aligned on a wooden shelf">
+                        <img id="img3" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop" alt="A collection of vintage books in a warm study room">
+                    </div>
+                    <div class="slider-nav" aria-label="Slider navigation">
+                        <a href="#img1" aria-label="Show first slide"></a>
+                        <a href="#img2" aria-label="Show second slide"></a>
+                        <a href="#img3" aria-label="Show third slide"></a>
+                    </div>
+                </section>
+
+                <p class="lead">
+                    Discover a world of captivating stories hidden within the pages of gently used books. At BookBazaar, we connect book lovers and provide a platform for exchanging cherished tales, from beloved classics to rare editions.
+                </p>
+
+                <section class="section">
+                    <h2 class="section-title">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.25z"/></svg>
+                        Why BookBazaar?
+                    </h2>
+
+                    <div class="feature">
+                        <h3>Unearth Literary Gems</h3>
+                        <p>Dive into an expansive collection of second-hand books, ranging from timeless classics to contemporary masterpieces. Our diverse selection caters to every genre and taste.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Eco-Conscious Reading</h3>
+                        <p>By embracing preloved books, you enjoy an affordable reading experience while supporting sustainable practices and extending the lifespan of literary treasures.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Connect with Fellow Bibliophiles</h3>
+                        <p>BookBazaar is more than a marketplace. It is a community of book enthusiasts where readers can share recommendations and connect over the written word.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Easy Buying and Selling</h3>
+                        <p>List your books effortlessly, browse detailed descriptions, and communicate with sellers to find the right book at the right price.</p>
+                    </div>
+
+                    <div class="feature">
+                        <h3>Secure Transactions</h3>
+                        <p>Your safety and privacy matter. BookBazaar focuses on creating a seamless and trustworthy shopping experience for every reader.</p>
+                    </div>
+                </section>
+
+                <footer>
+                    Join BookBazaar today and embark on a literary adventure like no other. Uncover hidden treasures, forge meaningful connections, and breathe new life into stories waiting to be discovered.
+
+                    <div class="footer-links">
+                        <a href="#">About Us</a>
+                        <a href="sellingbook.html">Sell a Book</a>
+                        <a href="#">Buy a Book</a>
+                        <a href="sellercontactus.html">Contact Us</a>
+                    </div>
+                </footer>
+                
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

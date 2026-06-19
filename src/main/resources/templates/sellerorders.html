@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seller Orders</title>
+    <title>Seller Desk - Orders</title>
     <style>
         /* ==========================================================================
-           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           GLOBAL BASE STYLES (Shared Glassmorphic Layout Structure)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -14,136 +14,168 @@
             padding: 0;
         }
 
-        /* Prevent full-page scrolling across all views */
-        body, html {
-            height: 100vh;
-            overflow: hidden;
+        html,
+        body {
+            min-height: 100vh;
             font-family: Arial, Helvetica, sans-serif;
-            background: #0b0f19;
+            background: #0f172a;
+            color: #f8fafc;
         }
 
-        /* Main viewport wrapper locked to 100vh with background image */
+        body {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
         .page-shell {
+            width: 100%;
             height: 100vh;
-            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: clamp(10px, 2vw, 22px);
             background:
-                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
-                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
-            background-size: cover;
-            background-position: center;
+                radial-gradient(circle at 18% 10%, rgba(94, 234, 212, 0.35), transparent 34%),
+                linear-gradient(135deg, #0f172a, #3a2e5d 58%, #7f3f36);
         }
 
-        /* Single, unified app frame with rich dark-blue/indigo gradient */
         .page-box {
-            width: min(1140px, 100%);
-            height: calc(100vh - 32px);
+            width: min(1360px, 100%);
+            height: calc(100vh - clamp(20px, 4vw, 44px));
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: linear-gradient(145deg, #131a2c, #1a233d);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(18px);
         }
 
-        /* Universal Top Navbar Layout */
+        /* Top Navbar */
         nav {
-            background: #0d1220;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px clamp(18px, 3vw, 30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+        }
+
+        .brand {
+            white-space: nowrap;
+            font-size: 0.82rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
         }
 
         nav ul {
-            min-height: 60px;
+            min-width: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: clamp(14px, 3vw, 40px);
+            justify-content: flex-end;
+            gap: clamp(10px, 2.2vw, 28px);
             list-style: none;
-            padding: 10px 22px;
-            flex-wrap: wrap;
         }
 
         nav a {
-            color: #94a3b8;
-            font-size: 0.88rem;
-            font-weight: 700;
-            text-decoration: none;
+            white-space: nowrap;
+            color: #c4d3e7;
+            font-size: clamp(0.68rem, 0.95vw, 0.8rem);
+            font-weight: 800;
             text-transform: uppercase;
             transition: color 0.2s ease;
         }
 
         nav a:hover {
-            color: #38bdf8; /* Bright Blue Accent */
+            color: #5eead4;
         }
 
-        /* Base Scrollable Content Panel */
+        /* Inner Scrollable Dashboard Container */
         .content-scroller {
-            flex-grow: 1;
+            flex: 1 1 auto;
             overflow-y: auto;
-            padding: 16px clamp(16px, 3vw, 28px) clamp(20px, 4vw, 36px);
+            padding: clamp(16px, 2.7vw, 32px);
             display: flex;
             flex-direction: column;
             gap: 24px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(94, 234, 212, 0.4) rgba(255, 255, 255, 0.05);
         }
 
-        /* Custom Scrollbars for content sections */
         .content-scroller::-webkit-scrollbar,
         .table-wrap::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
+
         .content-scroller::-webkit-scrollbar-track,
         .table-wrap::-webkit-scrollbar-track {
-            background: #151d30;
+            background: rgba(255, 255, 255, 0.05);
         }
+
         .content-scroller::-webkit-scrollbar-thumb,
         .table-wrap::-webkit-scrollbar-thumb {
-            background: #293754;
-            border-radius: 4px;
+            background: rgba(94, 234, 212, 0.4);
+            border-radius: 999px;
         }
+
         .content-scroller::-webkit-scrollbar-thumb:hover,
         .table-wrap::-webkit-scrollbar-thumb:hover {
-            background: #38bdf8;
+            background: #5eead4;
         }
 
-        /* ==========================================================================
-           ORDERS CARDS & DASHBOARD TABLES
-           ========================================================================== */
-        .dashboard-card {
-            padding: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            background: #151d30;
-        }
-
-        .dashboard-card h1 {
-            color: #ffffff;
-            font-size: clamp(1.8rem, 4vw, 2.4rem);
+        /* Top Header Area (Outside the Boxes) */
+        .page-header {
             margin-bottom: 6px;
         }
 
+        .page-header h1 {
+            color: #f8fafc;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: #c4d3e7;
+            font-size: 0.92rem;
+            line-height: 1.5;
+        }
+
+        /* ==========================================================================
+           ORDERS DASHBOARD SPECIFIC DESIGNS
+           ========================================================================== */
+        .dashboard-card {
+            padding: clamp(18px, 3vw, 28px);
+            border-radius: 12px;
+            background: rgba(8, 13, 26, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
         .dashboard-card h2 {
-            color: #fbbf24; /* Rich Gold */
-            font-size: 1.4rem;
+            color: #fbbf24;
+            font-size: 1.3rem;
+            font-weight: 800;
             margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
         }
 
-        .dashboard-card p {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            margin-bottom: 16px;
-        }
-
-        /* Table Responsive Wrappers */
+        /* Responsive Matrix Tables Wrappers */
         .table-wrap {
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
-            background: #0f1626;
+            background: rgba(15, 23, 42, 0.6);
             overflow: auto;
         }
 
@@ -156,25 +188,26 @@
         th {
             position: sticky;
             top: 0;
-            background: #0b0f19;
-            color: #fbbf24; /* Rich Gold Headers */
-            font-size: 0.82rem;
+            background: #0f172a;
+            color: #fbbf24;
+            font-size: 0.74rem;
+            font-weight: 900;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 700;
+            letter-spacing: 0.08em;
             z-index: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         th, td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding: 14px 12px;
             text-align: center;
             vertical-align: middle;
-            font-size: 0.9rem;
         }
 
         td {
-            color: #e2e8f0;
+            color: #cbd5e1;
+            font-size: 0.86rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         tbody tr {
@@ -182,123 +215,158 @@
         }
 
         tbody tr:hover {
-            background: #1e273b;
+            background: rgba(255, 255, 255, 0.04);
         }
 
         tbody tr:last-child td {
             border-bottom: none;
         }
 
-        /* Structure Column Assertions */
         td:nth-child(1) {
-            color: #ffffff;
+            color: #f8fafc;
             font-weight: 700;
         }
 
-        /* Inline Action Links Formatted as Compact Dashboard Buttons */
+        /* Styled Inline Micro Actions */
         td a {
             display: inline-block;
-            text-decoration: none;
-            padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            border-radius: 4px;
-            transition: filter 0.2s ease, transform 0.1s ease;
+            padding: 5px 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-radius: 5px;
+            transition: transform 0.2s ease, filter 0.2s ease, all 0.2s ease;
         }
 
-        /* Danger/Cancel link button */
+        /* Destructive Red Actions */
         td a[href*="cancelled"] {
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #fda4af;
+        }
+
+        td a[href*="cancelled"]:hover {
             background: #f43f5e;
             color: #ffffff;
+            border-color: transparent;
         }
 
-        /* Success/Delivered/Returned link button */
-        td a[href*="received"], td a[href*="returned"] {
+        /* Emerald Green Success Actions */
+        td a[href*="received"], 
+        td a[href*="returned"] {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #a7f3d0;
+        }
+
+        td a[href*="received"]:hover, 
+        td a[href*="returned"]:hover {
             background: #10b981;
             color: #ffffff;
+            border-color: transparent;
         }
 
         td a:hover {
-            filter: brightness(1.2);
-            transform: scale(1.05);
+            transform: translateY(-1px);
         }
 
-        /* Pricing Columns styling color mapping */
         .price-highlight {
-            color: #a78bfa !important; /* Vibrant Lavender */
-            font-weight: 700;
+            color: #c084fc !important;
+            font-weight: 800;
         }
 
-        /* Custom Status Badges */
+        /* Dashboard Pill State Badges */
         .status {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 999px;
             padding: 4px 12px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            background: #10b981; /* Emerald (Delivered) */
-            color: #ffffff;
+            font-size: 0.74rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
 
         .status.warn {
-            background: #d97706; /* Warm Amber (Ordered) */
-            color: #ffffff;
+            background: rgba(217, 119, 6, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(217, 119, 6, 0.3);
         }
 
         /* ==========================================================================
-           RESPONSIVE BREAKPOINTS
+           RESPONSIVE STRUCTURAL OVERRIDES
            ========================================================================== */
-        @media (max-width: 720px) {
+        @media (max-width: 980px) {
+            .page-shell {
+                height: 100vh;
+            }
+
+            .page-box {
+                height: calc(100vh - 20px);
+            }
+
+            nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav ul {
+                width: 100%;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .content-scroller {
+                padding: 20px 14px;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 520px) {
             .page-shell {
                 padding: 8px;
             }
 
             .page-box {
-                height: calc(100vh - 16px);
-            }
-
-            nav ul {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            nav a {
-                white-space: nowrap;
+                border-radius: 14px;
             }
 
             .content-scroller {
-                padding: 14px 12px;
-                gap: 16px;
-            }
-
-            .dashboard-card {
-                padding: 16px;
+                padding: 16px 12px;
             }
         }
     </style>
 </head>
 <body>
+
     <div class="page-shell">
         <main class="page-box">
             
             <nav>
+                <div class="brand">Seller Desk</div>
                 <ul>
-                    <li><a href="home.html">Home</a></li>
+                    <li><a href="sellerhome.html">Home</a></li>
                     <li><a href="sellingbook.html">Sell a Book</a></li>
-                    <li><a href="contactus.html">Contact Us</a></li>
-                    <li><a href="orders.html">Orders</a></li>
-                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="sellercontactus.html">Contact Us</a></li>
+                    <li><a href="sellerorders.html">Orders</a></li>
+                    <li><a href="sellerprofile.html">Profile</a></li>
                 </ul>
             </nav>
 
             <div class="content-scroller">
                 
-                <section class="dashboard-card">
+                <header class="page-header">
                     <h1>Seller Orders</h1>
                     <p>Please confirm orders with customers using the contact details below.</p>
+                </header>
+                
+                <section class="dashboard-card">
+                    <h2>Books on Sale</h2>
                     
                     <div class="table-wrap">
                         <table>
@@ -335,7 +403,7 @@
                 </section>
 
                 <section class="dashboard-card">
-                    <h2>Books for Rent</h2>
+                    <h2>Books on Rent</h2>
                     
                     <div class="table-wrap">
                         <table>
@@ -370,5 +438,6 @@
             </div>
         </main>
     </div>
+
 </body>
 </html>

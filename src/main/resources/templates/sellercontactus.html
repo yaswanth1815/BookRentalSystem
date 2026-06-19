@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Seller Desk - Contact Us</title>
     <style>
         /* ==========================================================================
-           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           GLOBAL BASE STYLES (Shared Glassmorphic Layout Structure)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -14,135 +14,159 @@
             padding: 0;
         }
 
-        /* Prevent full-page scrolling across all views */
-        body, html {
-            height: 100vh;
-            overflow: hidden;
+        html,
+        body {
+            min-height: 100vh;
             font-family: Arial, Helvetica, sans-serif;
-            background: #0b0f19;
+            background: #0f172a;
+            color: #f8fafc;
         }
 
-        /* Main viewport wrapper locked to 100vh with background image */
+        body {
+            overflow: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
         .page-shell {
+            width: 100%;
             height: 100vh;
-            padding: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: clamp(10px, 2vw, 22px);
             background:
-                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
-                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
-            background-size: cover;
-            background-position: center;
+                radial-gradient(circle at 18% 10%, rgba(94, 234, 212, 0.35), transparent 34%),
+                linear-gradient(135deg, #0f172a, #3a2e5d 58%, #7f3f36);
         }
 
-        /* Single, unified app frame with rich dark-blue/indigo gradient */
         .page-box {
-            width: min(1140px, 100%);
-            height: calc(100vh - 32px);
+            width: min(1360px, 100%);
+            height: calc(100vh - clamp(20px, 4vw, 44px));
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            background: linear-gradient(145deg, #131a2c, #1a233d);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(18px);
         }
 
-        /* Universal Top Navbar Layout */
+        /* Top Navbar */
         nav {
-            background: #0d1220;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
+            flex: 0 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 14px clamp(18px, 3vw, 30px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+        }
+
+        .brand {
+            white-space: nowrap;
+            font-size: 0.82rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
         }
 
         nav ul {
-            min-height: 60px;
+            min-width: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: clamp(14px, 3vw, 40px);
+            justify-content: flex-end;
+            gap: clamp(10px, 2.2vw, 28px);
             list-style: none;
-            padding: 10px 22px;
-            flex-wrap: wrap;
         }
 
         nav a {
-            color: #94a3b8;
-            font-size: 0.88rem;
-            font-weight: 700;
-            text-decoration: none;
+            white-space: nowrap;
+            color: #c4d3e7;
+            font-size: clamp(0.68rem, 0.95vw, 0.8rem);
+            font-weight: 800;
             text-transform: uppercase;
             transition: color 0.2s ease;
         }
 
         nav a:hover {
-            color: #38bdf8; /* Bright Blue Accent */
+            color: #5eead4;
         }
 
-        /* Base Scrollable Content Panel */
+        /* Inner Scrollable Dashboard Container */
         .content-scroller {
-            flex-grow: 1;
+            flex: 1 1 auto;
             overflow-y: auto;
-            padding: clamp(20px, 4vw, 36px) clamp(16px, 3vw, 28px);
+            padding: clamp(16px, 2.7vw, 32px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(94, 234, 212, 0.4) rgba(255, 255, 255, 0.05);
         }
 
-        /* Custom Scrollbars for panels or content sections */
         .content-scroller::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
         }
+
         .content-scroller::-webkit-scrollbar-track {
-            background: #151d30;
+            background: rgba(255, 255, 255, 0.05);
         }
+
         .content-scroller::-webkit-scrollbar-thumb {
-            background: #293754;
-            border-radius: 4px;
+            background: rgba(94, 234, 212, 0.4);
+            border-radius: 999px;
         }
+
         .content-scroller::-webkit-scrollbar-thumb:hover {
-            background: #38bdf8;
+            background: #5eead4;
         }
 
         /* ==========================================================================
-           CONTACT VIEW COMPONENTS
+           CONTACT VIEW CARD COMPONENTS
            ========================================================================== */
         .contact-card {
-            width: min(540px, 100%);
-            padding: clamp(24px, 5vw, 36px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            background: #151d30;
+            max-width: 540px;
+            width: 100%;
+            padding: clamp(20px, 4vw, 32px);
+            border-radius: 12px;
+            background: rgba(8, 13, 26, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
-            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
         }
 
         .contact-card h1 {
-            color: #ffffff;
+            color: #f8fafc;
             font-size: clamp(1.6rem, 3.5vw, 2.2rem);
             font-weight: 800;
+            line-height: 1.2;
             margin-bottom: 8px;
+            letter-spacing: -0.01em;
         }
 
         .contact-card p {
-            color: #94a3b8;
-            font-size: 1rem;
-            line-height: 1.6;
+            color: #c4d3e7;
+            font-size: 0.95rem;
+            line-height: 1.5;
             margin-bottom: 24px;
         }
 
-        /* Meta detail line items */
+        /* Internal list panel */
         .contact-details {
             display: flex;
             flex-direction: column;
             gap: 16px;
             text-align: left;
-            background: #0f1626;
+            background: rgba(15, 23, 42, 0.6);
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .detail-item {
@@ -152,67 +176,78 @@
         }
 
         .detail-item span.label {
-            color: #fbbf24; /* Rich Gold */
-            font-size: 0.8rem;
+            color: #fbbf24;
+            font-size: 0.76rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 700;
+            letter-spacing: 0.08em;
+            font-weight: 900;
         }
 
         .detail-item span.value {
             color: #e2e8f0;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         /* ==========================================================================
-           RESPONSIVE BREAKPOINTS
+           RESPONSIVE STRUCTURAL OVERRIDES
            ========================================================================== */
-        @media (max-width: 720px) {
+        @media (max-width: 980px) {
             .page-shell {
-                padding: 8px;
+                height: 100vh;
             }
 
             .page-box {
-                height: calc(100vh - 16px);
+                height: calc(100vh - 20px);
+            }
+
+            nav {
+                align-items: flex-start;
+                flex-direction: column;
             }
 
             nav ul {
+                width: 100%;
+                flex-wrap: wrap;
                 justify-content: flex-start;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            nav a {
-                white-space: nowrap;
             }
 
             .content-scroller {
                 padding: 20px 14px;
             }
+        }
 
-            .contact-card {
-                padding: 20px;
+        @media (max-width: 520px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                border-radius: 14px;
+            }
+
+            .content-scroller {
+                padding: 16px 12px;
             }
         }
     </style>
 </head>
 <body>
+
     <div class="page-shell">
         <main class="page-box">
             
-            <!-- Navbar Framework Links -->
             <nav>
+                <div class="brand">Seller Desk</div>
                 <ul>
-                    <li><a href="home.html">Home</a></li>
+                    <li><a href="sellerhome.html">Home</a></li>
                     <li><a href="sellingbook.html">Sell a Book</a></li>
-                    <li><a href="contactus.html">Contact Us</a></li>
-                    <li><a href="orders.html">Orders</a></li>
-                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="sellercontactus.html">Contact Us</a></li>
+                    <li><a href="sellerorders.html">Orders</a></li>
+                    <li><a href="sellerprofile.html">Profile</a></li>
                 </ul>
             </nav>
 
-            <!-- Scrollable Viewport Wrapper Frame -->
             <div class="content-scroller">
                 
                 <section class="contact-card">
@@ -234,5 +269,6 @@
             </div>
         </main>
     </div>
+
 </body>
 </html>
