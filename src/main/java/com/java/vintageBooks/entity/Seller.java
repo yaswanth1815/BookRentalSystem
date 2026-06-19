@@ -8,11 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "seller")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Seller {
 
     private String name;
     private String mobile;

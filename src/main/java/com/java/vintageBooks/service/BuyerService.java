@@ -15,12 +15,12 @@ public class BuyerService {
         return buyerRepository.save(buyer);
     }
 
-    public Buyer login(String username, String password) {
+    public Buyer buyerLogin(String username, String password) {
         return buyerRepository.findByUsernameAndPassword(username,password);
     }
 
-    public boolean buyerExists(String username) {
-        return buyerRepository.existsByUsername(username);
+    public boolean buyerExists(Buyer buyer) {
+        return buyerRepository.existsByUsername(buyer.getUsername());
     }
 
     public Buyer getBuyer(String username) {

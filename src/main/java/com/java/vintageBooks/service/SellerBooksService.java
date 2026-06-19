@@ -3,19 +3,19 @@ package com.java.vintageBooks.service;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.java.vintageBooks.entity.Book;
-import com.java.vintageBooks.repository.BookRepository;
+import com.java.vintageBooks.entity.SellerBooks;
+import com.java.vintageBooks.repository.SellerBooksRepository;
 
 @Service
-public class BookService {
+public class SellerBooksService {
     @Autowired
-    private BookRepository bookRepository;
+    private SellerBooksRepository bookRepository;
     
-    public Book saveBook(Book book){
+    public SellerBooks saveBook(SellerBooks book){
         return bookRepository.save(book);
     }
 
-    public List<Book> getAllBooks(){
+    public List<SellerBooks> getAllBooks(){
         return bookRepository.findAll();
     }
 
@@ -23,15 +23,15 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public List<Book> getBookByName(String name){
+    public List<SellerBooks> getBookByName(String name){
         return bookRepository.findByNameContaining(name);
     }
 
-    public List<Book> getBookByAuthor(String author){
+    public List<SellerBooks> getBookByAuthor(String author){
         return bookRepository.findByAuthorContaining(author);
     }
 
-    public List<Book> getBookByType(String type){
+    public List<SellerBooks> getBookByType(String type){
         return bookRepository.findByType(type);
     }
 }

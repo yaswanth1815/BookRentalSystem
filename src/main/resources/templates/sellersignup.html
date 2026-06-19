@@ -235,7 +235,7 @@
             <h1>Seller Signup</h1>
             <p class="subtitle">Enter your details to create a seller account.</p>
 
-            <form th:action="@{/signup}" method="post">
+            <form th:action="@{/sellersignup}" method="post">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
@@ -266,7 +266,7 @@
 
             <p class="signin-link">
                 Already have an account?
-                <a th:href="@{/signin}">Sign In</a>
+                <a th:href="@{/sellersignin}">Sign In</a>
             </p>
         </section>
     </main>
