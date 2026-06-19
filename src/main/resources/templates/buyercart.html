@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Cart</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, flat container with vibrant dark-blue gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Content elements flow cleanly inside this layout */
+        .content {
+            padding: clamp(20px, 4vw, 36px);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .content h1 {
+            margin-bottom: 8px;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: #ffffff;
+        }
+
+        .cart-count {
+            display: inline-flex;
+            align-items: center;
+            align-self: flex-start;
+            gap: 10px;
+            margin-top: 4px;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #232d45;
+            color: #cbd5e1;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-count strong {
+            min-width: 26px;
+            min-height: 26px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #10b981; /* Vibrant Emerald */
+            color: #ffffff;
+            font-size: 0.85rem;
+        }
+
+        /* Table container handles internal scrolling */
+        .table-wrap {
+            width: 100%;
+            margin-top: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            background: #151d30;
+            overflow: auto; 
+            flex-grow: 1;
+        }
+
+        table {
+            width: 100%;
+            min-width: 760px;
+            border-collapse: collapse;
+        }
+
+        /* Sticky table headers */
+        th {
+            position: sticky;
+            top: 0;
+            background: #0f1626;
+            color: #fbbf24; /* Rich Gold */
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 1;
+        }
+
+        th, td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 14px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            color: #e2e8f0;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #1e273b;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:nth-child(1) {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        td:nth-child(5) {
+            font-weight: 700;
+            color: #a78bfa; /* Vibrant Lavender */
+        }
+
+        td a {
+            display: inline-block;
+            min-width: 86px;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        td:nth-child(6) a {
+            background: #f43f5e; /* Rose Crimson */
+        }
+
+        td:nth-child(7) a {
+            background: #10b981; /* Emerald */
+        }
+
+        td a:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.2);
+        }
+
+        /* Custom Scrollbar */
+        .table-wrap::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .table-wrap::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .table-wrap::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .content {
+                padding: 16px 12px;
+            }
+
+            .cart-count {
+                width: 100%;
+                justify-content: space-between;
+                border-radius: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            <nav>
+                <ul>
+                    <li><a href="buyerhome.html">Home</a></li>
+                    <li><a href="buyingbook.html">Buy a Book</a></li>
+                    <li><a href="vintagebooks.html">Vintage Books</a></li>
+                    <li><a href="buyercontactus.html">Contact Us</a></li>
+                    <li><a href="buyercart.html">Cart</a></li>
+                    <li><a href="buyerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <section class="content">
+                <h1>Your Cart</h1>
+                <p class="cart-count">Number of books you have added to cart: <strong>2</strong></p>
+
+                <!-- Table scrolls natively right inside the core box layout -->
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Book Name</th>
+                                <th>Author</th>
+                                <th>Pages</th>
+                                <th>Price</th>
+                                <th>Type</th>
+                                <th>Operation 1</th>
+                                <th>Operation 2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>The Alchemist</td>
+                                <td>Paulo Coelho</td>
+                                <td>208</td>
+                                <td>120/-</td>
+                                <td>Sell</td>
+                                <td><a href="#">Remove</a></td>
+                                <td><a href="#">Buy</a></td>
+                            </tr>
+                            <tr>
+                                <td>Wings of Fire</td>
+                                <td>A. P. J. Abdul Kalam</td>
+                                <td>180</td>
+                                <td>60/-</td>
+                                <td>Rent</td>
+                                <td><a href="#">Remove</a></td>
+                                <td><a href="#">Buy</a></td>
+                            </tr>
+                        </table>
+                    </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

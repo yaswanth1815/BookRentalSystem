@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Home</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Base Scrollable Content Panel */
+        .content-scroller {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: clamp(20px, 4vw, 36px) clamp(16px, 3vw, 28px);
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Custom Scrollbars for panels or content sections */
+        .content-scroller::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-scroller::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .content-scroller::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .content-scroller::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* ==========================================================================
+           BUYER HOME COMPONENT LAYOUTS
+           ========================================================================== */
+        .hero {
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            color: #ffffff;
+            font-weight: 800;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin: 10px auto 0;
+            color: #38bdf8;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 600;
+        }
+
+        .lead {
+            max-width: 820px;
+            margin: 0 auto;
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        /* Slider Element Container */
+        .slider-wrapper {
+            position: relative;
+            width: min(100%, 780px);
+            margin: 0 auto;
+        }
+
+        .slider {
+            display: flex;
+            aspect-ratio: 16 / 9;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            border-radius: 10px;
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hide standard scrollbar indicators inside slider wrapper */
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider img {
+            width: 100%;
+            flex: 1 0 100%;
+            object-fit: cover;
+            background: #151d30;
+            scroll-snap-align: start;
+        }
+
+        .slider-nav {
+            position: absolute;
+            left: 50%;
+            bottom: 16px;
+            display: flex;
+            gap: 12px;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .slider-nav a {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .slider-nav a:hover,
+        .slider-nav a:focus {
+            background: #ffffff;
+            transform: scale(1.2);
+        }
+
+        /* Clean Flat Informational Cards */
+        .info-card {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: #151d30;
+        }
+
+        .info-card h2 {
+            margin-bottom: 20px;
+            color: #fbbf24; /* Rich Gold */
+            font-size: 1.6rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 10px;
+        }
+
+        .feature {
+            margin-bottom: 20px;
+        }
+
+        .feature:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature h3 {
+            margin-bottom: 6px;
+            color: #ffffff;
+            font-size: 1.15rem;
+        }
+
+        .feature p {
+            color: #94a3b8;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .content-scroller {
+                padding: 20px 14px;
+                gap: 20px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <nav>
+                <ul>
+                    <li><a href="buyerhome.html">Home</a></li>
+                    <li><a href="buyingbook.html">Buy a Book</a></li>
+                    <li><a href="vintagebooks.html">Vintage Books</a></li>
+                    <li><a href="buyercontactus.html">Contact Us</a></li>
+                    <li><a href="buyercart.html">Cart</a></li>
+                    <li><a href="buyerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="content-scroller">
+                
+                <section class="hero">
+                    <h1>Welcome to Vintage Books</h1>
+                    <p>Your gateway to preloved literary treasures.</p>
+                </section>
+
+                <section class="slider-wrapper">
+                    <div class="slider">
+                        <img id="buyer-img1" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000&auto=format&fit=crop" alt="Vintage books">
+                        <img id="buyer-img2" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1000&auto=format&fit=crop" alt="Book collection">
+                        <img id="buyer-img3" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop" alt="Books on shelves">
+                    </div>
+                    <div class="slider-nav">
+                        <a href="#buyer-img1" aria-label="First slide"></a>
+                        <a href="#buyer-img2" aria-label="Second slide"></a>
+                        <a href="#buyer-img3" aria-label="Third slide"></a>
+                    </div>
+                </section>
+
+                <p class="lead">Discover captivating stories hidden inside gently used books. Vintage Books connects readers with affordable classics, rare editions, and everyday favorites.</p>
+
+                <section class="info-card">
+                    <h2>Why Vintage Books?</h2>
+                    <div class="feature">
+                        <h3>Unearth Literary Gems</h3>
+                        <p>Browse second-hand books across many genres and find a read that fits your mood.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Eco-Conscious Reading</h3>
+                        <p>Give preloved books a new reader while supporting sustainable reading habits.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>Easy Buying and Renting</h3>
+                        <p>Choose a book, add it to your cart, and connect with sellers for simple transactions.</p>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Base Scrollable Content Panel */
+        .content-scroller {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: clamp(20px, 4vw, 36px) clamp(16px, 3vw, 28px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Custom Scrollbars for panels or content sections */
+        .content-scroller::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content-scroller::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .content-scroller::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .content-scroller::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* ==========================================================================
+           CONTACT VIEW COMPONENTS
+           ========================================================================== */
+        .contact-card {
+            width: min(540px, 100%);
+            padding: clamp(24px, 5vw, 36px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: #151d30;
+            text-align: center;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+        }
+
+        .contact-card h1 {
+            color: #ffffff;
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .contact-card p {
+            color: #94a3b8;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Meta detail line items */
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+            background: #0f1626;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-item span.label {
+            color: #fbbf24; /* Rich Gold */
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+
+        .detail-item span.value {
+            color: #e2e8f0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .content-scroller {
+                padding: 20px 14px;
+            }
+
+            .contact-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <!-- Navbar Framework Links -->
+            <nav>
+                <ul>
+                    <li><a href="home.html">Home</a></li>
+                    <li><a href="sellingbook.html">Sell a Book</a></li>
+                    <li><a href="contactus.html">Contact Us</a></li>
+                    <li><a href="orders.html">Orders</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <!-- Scrollable Viewport Wrapper Frame -->
+            <div class="content-scroller">
+                
+                <section class="contact-card">
+                    <h1>We Are Here to Help You</h1>
+                    <p>Connect with us without any hesitation.</p>
+                    
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span class="label">Phone</span>
+                            <span class="value">+91 0987654321</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Email</span>
+                            <span class="value">bookstore@gmail.com</span>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

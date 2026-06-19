@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Contact Us</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Base Content Container - keeps content inside the unscrollable box */
+        .content {
+            padding: clamp(20px, 4vw, 36px);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .content h1 {
+            margin-bottom: 8px;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           SPECIFIC INTERFACE COMPONENTS
+           ========================================================================== */
+        .lead-text {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        /* Clean, responsive informational layout block */
+        .info-block {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 600px;
+        }
+
+        .info-item {
+            background: #151d30;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 20px;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
+
+        .info-item strong {
+            color: #fbbf24; /* Rich Gold highlight color */
+            margin-right: 6px;
+        }
+
+        /* Custom Scrollbars for panels or content sections */
+        .content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .content::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .content::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .content {
+                padding: 16px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <nav>
+                <ul>
+                    <li><a href="buyerhome.html">Home</a></li>
+                    <li><a href="buyingbook.html">Buy a Book</a></li>
+                    <li><a href="vintagebooks.html">Vintage Books</a></li>
+                    <li><a href="buyercontactus.html">Contact Us</a></li>
+                    <li><a href="buyercart.html">Cart</a></li>
+                    <li><a href="buyerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <section class="content">
+                <h1>We Are Here to Help You</h1>
+                <p class="lead-text">Connect with us without any hesitation.</p>
+
+                <div class="info-block">
+                    <div class="info-item">
+                        <strong>Phone:</strong> +91 0987654321
+                    </div>
+                    <div class="info-item">
+                        <strong>Email:</strong> bookstore@gmail.com
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

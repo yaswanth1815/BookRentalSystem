@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Books</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Base Scrollable Content Panel */
+        .content-scroller {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: clamp(20px, 4vw, 36px) clamp(16px, 3vw, 28px);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Custom Scrollbars for panels or content sections */
+        .content-scroller::-webkit-scrollbar,
+        .table-wrap::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .content-scroller::-webkit-scrollbar-track,
+        .table-wrap::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .content-scroller::-webkit-scrollbar-thumb,
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .content-scroller::-webkit-scrollbar-thumb:hover,
+        .table-wrap::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* ==========================================================================
+           VINTAGE BOOKS SPECIFIC INTERFACE
+           ========================================================================== */
+        .info-card {
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: #151d30;
+        }
+
+        .info-card h1 {
+            color: #ffffff;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            margin-bottom: 12px;
+        }
+
+        .info-card p {
+            color: #cbd5e1;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        /* Explicit reference links inside text sections */
+        .info-card p a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 1px dashed #38bdf8;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .info-card p a:hover {
+            color: #fbbf24; /* Switch highlight color to Gold */
+            border-bottom-color: #fbbf24;
+        }
+
+        /* Table Responsive Wrappers */
+        .table-wrap {
+            width: 100%;
+            margin-top: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            background: #0f1626;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #0b0f19;
+            color: #fbbf24; /* Rich Gold headers */
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            padding: 14px 16px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left; /* Left-aligned for book listings reading */
+        }
+
+        /* Target first index column explicitly for centering */
+        th:nth-child(1), td:nth-child(1) {
+            text-align: center;
+            width: 80px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        td {
+            color: #e2e8f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.95rem;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #1e273b;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .content-scroller {
+                padding: 20px 14px;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <nav>
+                <ul>
+                    <li><a href="buyerhome.html">Home</a></li>
+                    <li><a href="buyingbook.html">Buy a Book</a></li>
+                    <li><a href="vintagebooks.html">Vintage Books</a></li>
+                    <li><a href="buyercontactus.html">Contact Us</a></li>
+                    <li><a href="buyercart.html">Cart</a></li>
+                    <li><a href="buyerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <div class="content-scroller">
+                
+                <section class="info-card">
+                    <h1>Online Vintage Books</h1>
+                    <p>At present these books are available for online reading. We are trying to bring hard copies soon.</p>
+                    <p>To access them, click <a href="https://drive.google.com/drive/folders/1XuVODZez1hFZ03TvtpBs_aaibWSgMyPm" target="_blank" rel="noopener noreferrer">here</a>.</p>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sno</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Pride and Prejudice</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Treasure Island</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>The Adventures of Sherlock Holmes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+            </div>
+        </main>
+    </div>
+</body>
+</html>

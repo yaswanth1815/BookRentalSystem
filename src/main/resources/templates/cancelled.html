@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Cancelled</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(640px, 100%);
+            height: auto;
+            max-height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Base Scrollable Content Panel */
+        .content-scroller {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: clamp(24px, 5vw, 44px) clamp(16px, 4vw, 36px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ==========================================================================
+           CANCELLED NOTICE CARD STYLES
+           ========================================================================== */
+        .status-card {
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Warning/Error indicator circle */
+        .status-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(244, 63, 94, 0.1);
+            border: 2px solid #f43f5e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #f43f5e;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .status-card h1 {
+            color: #ffffff;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .status-card p {
+            color: #94a3b8;
+            font-size: 1.02rem;
+            line-height: 1.6;
+            max-width: 460px;
+            margin: 0 auto 28px;
+        }
+
+        /* Action Buttons */
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .button.danger {
+            background: #f43f5e;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(244, 63, 94, 0.3);
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.15);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                max-height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: center;
+            }
+
+            .content-scroller {
+                padding: 32px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <!-- Navbar Framework Links -->
+            <nav>
+                <ul>
+                    <li><a href="orders.html">Back to Orders</a></li>
+                    <li><a href="home.html">Home</a></li>
+                </ul>
+            </nav>
+
+            <!-- Scrollable Viewport Frame Core Container -->
+            <div class="content-scroller">
+                
+                <!-- Cancelled Notice Block -->
+                <section class="status-card">
+                    <div class="status-icon">✕</div>
+                    <h1>Order Cancelled</h1>
+                    <p>The selected order has been marked as cancelled. In the PHP version, this page restored the book quantity and redirected to orders.</p>
+                    <a class="button danger" href="orders.html">Go to Orders</a>
+                </section>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

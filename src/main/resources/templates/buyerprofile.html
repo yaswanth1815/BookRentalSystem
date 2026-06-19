@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Profile</title>
+    <style>
+        /* ==========================================================================
+           GLOBAL BASE STYLES (Shared Dashboard Architecture)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Prevent full-page scrolling across all views */
+        body, html {
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0f19;
+        }
+
+        /* Main viewport wrapper locked to 100vh with background image */
+        .page-shell {
+            height: 100vh;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Single, unified app frame with rich dark-blue/indigo gradient */
+        .page-box {
+            width: min(1140px, 100%);
+            height: calc(100vh - 32px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(145deg, #131a2c, #1a233d);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Universal Top Navbar Layout */
+        nav {
+            background: #0d1220;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        nav ul {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(14px, 3vw, 40px);
+            list-style: none;
+            padding: 10px 22px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: color 0.2s ease;
+        }
+
+        nav a:hover {
+            color: #38bdf8; /* Bright Blue Accent */
+        }
+
+        /* Sub-navigation action layer (Logout row) */
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 14px 24px 0;
+            flex-shrink: 0;
+        }
+
+        /* Base Scrollable Content Panel */
+        .content-scroller {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 16px clamp(16px, 3vw, 28px) clamp(20px, 4vw, 36px);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Custom Scrollbars for content sections */
+        .content-scroller::-webkit-scrollbar,
+        .table-wrap::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .content-scroller::-webkit-scrollbar-track,
+        .table-wrap::-webkit-scrollbar-track {
+            background: #151d30;
+        }
+        .content-scroller::-webkit-scrollbar-thumb,
+        .table-wrap::-webkit-scrollbar-thumb {
+            background: #293754;
+            border-radius: 4px;
+        }
+        .content-scroller::-webkit-scrollbar-thumb:hover,
+        .table-wrap::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* ==========================================================================
+           PROFILE CARDS & TABLES
+           ========================================================================== */
+        .profile-card {
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            background: #151d30;
+        }
+
+        .profile-card h1 {
+            color: #ffffff;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            margin-bottom: 6px;
+        }
+
+        .profile-card h2 {
+            color: #fbbf24; /* Rich Gold */
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        .profile-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+
+        .profile-card strong {
+            color: #38bdf8; /* Accent light blue */
+        }
+
+        /* Table Responsive Wrappers */
+        .table-wrap {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            background: #0f1626;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 840px;
+            border-collapse: collapse;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            background: #0b0f19;
+            color: #fbbf24; /* Rich Gold */
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+            z-index: 1;
+        }
+
+        th, td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 14px 12px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: #e2e8f0;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #1e273b;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* First structural table indicators column */
+        td:nth-child(1) {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        /* Price highlighting */
+        td:contains("/-"), td:nth-child(6), td:nth-child(4) {
+            color: #a78bfa; /* Vibrant Lavender */
+        }
+
+        /* Custom Badges for Order Progress Statuses */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: #10b981; /* Emerald Green (Delivered) */
+            color: #ffffff;
+        }
+
+        .status.warn {
+            background: #d97706; /* Warm Amber (Ordered) */
+            color: #ffffff;
+        }
+
+        .status.danger {
+            background: #f43f5e; /* Crimson Red */
+            color: #ffffff;
+        }
+
+        /* Action Buttons */
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .button.danger {
+            background: #f43f5e;
+            color: #ffffff;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.15);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS
+           ========================================================================== */
+        @media (max-width: 720px) {
+            .page-shell {
+                padding: 8px;
+            }
+
+            .page-box {
+                height: calc(100vh - 16px);
+            }
+
+            nav ul {
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            nav a {
+                white-space: nowrap;
+            }
+
+            .action-bar {
+                padding: 10px 14px 0;
+            }
+
+            .content-scroller {
+                padding: 14px 12px;
+                gap: 16px;
+            }
+
+            .profile-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-shell">
+        <main class="page-box">
+            
+            <!-- Navbar Framework Links -->
+            <nav>
+                <ul>
+                    <li><a href="buyerhome.html">Home</a></li>
+                    <li><a href="buyingbook.html">Buy a Book</a></li>
+                    <li><a href="vintagebooks.html">Vintage Books</a></li>
+                    <li><a href="buyercontactus.html">Contact Us</a></li>
+                    <li><a href="buyercart.html">Cart</a></li>
+                    <li><a href="buyerprofile.html">Profile</a></li>
+                </ul>
+            </nav>
+
+            <!-- Logout Command Bar Structure -->
+            <div class="action-bar">
+                <a class="button danger" href="buyersignin.html">Logout</a>
+            </div>
+
+            <!-- Scrollable Viewport Frame Core Container -->
+            <div class="content-scroller">
+                
+                <!-- Purchase Profile Segment -->
+                <section class="profile-card">
+                    <h1>Buyer Profile</h1>
+                    <p>Number of books you have ordered: <strong>1</strong></p>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Book Name</th>
+                                    <th>Author</th>
+                                    <th>Seller</th>
+                                    <th>Seller Mobile</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                    <th>Ordered</th>
+                                    <th>Delivered</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>101</td>
+                                    <td>The Alchemist</td>
+                                    <td>Paulo Coelho</td>
+                                    <td>Ravi</td>
+                                    <td>9876543210</td>
+                                    <td style="color: #a78bfa; font-weight: 700;">120/-</td>
+                                    <td><span class="status warn">Ordered</span></td>
+                                    <td>2026-06-19</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Rental Profile Segment -->
+                <section class="profile-card">
+                    <h2>Rented Books</h2>
+                    
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Book Name</th>
+                                    <th>Seller</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th>Ordered</th>
+                                    <th>Delivered</th>
+                                    <th>Returned</th>
+                                    <th>Days</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>202</td>
+                                    <td>Wings of Fire</td>
+                                    <td>Meena</td>
+                                    <td style="color: #a78bfa; font-weight: 700;">60/-</td>
+                                    <td><span class="status">Delivered</span></td>
+                                    <td>2026-06-15</td>
+                                    <td>2026-06-16</td>
+                                    <td>-</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

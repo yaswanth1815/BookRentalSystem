@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Signup</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Prevents the whole screen from scrolling */
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1f2937;
+            background:
+                linear-gradient(rgba(12, 20, 34, 0.58), rgba(12, 20, 34, 0.58)),
+                url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signup-page {
+            width: 100%;
+            max-width: 980px;
+            height: 90vh; /* Keeps the container locked within viewport dimensions */
+            max-height: 700px;
+            display: grid;
+            grid-template-columns: 1fr 430px;
+            overflow: hidden; /* Restricts overflow out of the main block */
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 8px;
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+        }
+
+        .brand-panel {
+            padding: 46px;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(25, 45, 74, 0.78), rgba(25, 45, 74, 0.78)),
+                url("https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1000&q=80");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* Creates clean spacing between header block items */
+            overflow-y: auto; /* Fallback internal scroll for small devices */
+        }
+
+        .brand-header-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .brand-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-copy h2 {
+            max-width: 420px;
+            margin-top:200px;
+            margin-bottom: 12px;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1.1;
+        }
+
+        .brand-copy p {
+            max-width: 390px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.86);
+        }
+
+        .form-panel {
+            padding: 42px 38px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto; /* Essential: Restricts scrolling strictly inside this panel */
+            height: 100%;
+        }
+
+        /* Customize internal scrollbars for UI refinement */
+        .form-panel::-webkit-scrollbar,
+        .brand-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .form-panel::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.15);
+            border-radius: 10px;
+        }
+
+        h1 {
+            margin-bottom: 6px;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            color: #111827;
+        }
+
+        .subtitle {
+            margin-bottom: 24px;
+            color: #6b7280;
+            line-height: 1.5;
+            font-size: 0.92rem;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            min-height: 44px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            color: #111827;
+            background: #ffffff;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+        }
+
+        input[type="submit"] {
+            min-height: 46px;
+            margin-top: 6px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        input[type="submit"]:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .signin-link {
+            margin-top: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.92rem;
+        }
+
+        .signin-link a {
+            color: #2563eb;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Layout Overrides */
+        @media (max-width: 800px) {
+            body {
+                overflow: auto; /* Fallback behavior so fields don't clip on small screens */
+            }
+            .signup-page {
+                max-width: 460px;
+                height: auto;
+                max-height: initial;
+                grid-template-columns: 1fr;
+                overflow: visible;
+            }
+            .brand-panel {
+                padding: 30px;
+                overflow: visible;
+            }
+            .form-panel {
+                overflow: visible;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            .brand-panel {
+                padding: 20px;
+            }
+            .form-panel {
+                padding: 24px 18px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="signup-page">
+        <section class="brand-panel">
+            <div class="brand-header-group">
+                <div class="brand-name">Book Rental System</div>
+                
+                <div class="brand-copy">
+                    <h2>Share books with readers near you.</h2>
+                    <p>Create your seller account and start listing books for rent in a simple, reliable marketplace.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-panel">
+            <h1>Seller Signup</h1>
+            <p class="subtitle">Enter your details to create a seller account.</p>
+
+            <form th:action="@{/signup}" method="post">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="text" id="mobile" name="mobile" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mailid">Email</label>
+                    <input type="email" id="mailid" name="mailid" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <input type="submit" value="Signup">
+            </form>
+
+            <p class="signin-link">
+                Already have an account?
+                <a th:href="@{/signin}">Sign In</a>
+            </p>
+        </section>
+    </main>
+
+</body>
+</html>
