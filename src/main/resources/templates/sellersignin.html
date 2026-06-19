@@ -26,7 +26,12 @@
             padding: 28px 16px;
             overflow: hidden;
         }
-
+        .error-message {
+            color: red;
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
         .signin-page {
             width: 100%;
             max-width: 900px;
@@ -238,7 +243,7 @@
 
                 <input type="submit" value="Login">
             </form>
-
+            <p class="error-message" th:if="{sellerloginerror}" th:text="{sellersigninerror}"></p>
             <p class="signup-link">
                 New User?
                 <a th:href="@{/sellersignup}">Signup Here</a>

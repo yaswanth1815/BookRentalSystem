@@ -1,5 +1,5 @@
 package com.java.vintageBooks.controller;
 
-public class BookController {
+public class SellerBooksController {
     
 }

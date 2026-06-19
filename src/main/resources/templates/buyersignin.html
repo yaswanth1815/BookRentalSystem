@@ -110,6 +110,12 @@
             font-weight: 700;
             color: #374151;
         }
+        .error-message {
+            color: red;
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
 
         input {
             width: 100%;
@@ -238,7 +244,7 @@
 
                 <input type="submit" value="Login">
             </form>
-
+            <p class="error-message" th:if="${buyersigninerror}" th:text="${buyersigninerror}"></p>
             <p class="signup-link">
                 New User?
                 <a th:href="@{/buyersignup}">Signup Here</a>

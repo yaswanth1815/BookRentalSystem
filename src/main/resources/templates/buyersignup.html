@@ -178,7 +178,12 @@
         .signin-link a:hover {
             text-decoration: underline;
         }
-
+        .error-message {
+            color: red;
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
         /* Responsive Breakpoints */
         @media (max-width: 800px) {
             body {
@@ -263,7 +268,7 @@
 
                 <input type="submit" value="Signup">
             </form>
-
+            <p class="error-message" th:if="{buyersignuperror}" th:text="{buyersignuperror}"></p>
             <p class="signin-link">
                 Already have an account?
                 <a th:href="@{/buyersignin}">Sign In</a>
