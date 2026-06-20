@@ -9,4 +9,5 @@ public interface SellerBooksRepository extends JpaRepository<SellerBooks,Integer
     List<SellerBooks> findByBooknameContaining(String bookname);
     List<SellerBooks> findByAuthorContaining(String author);
     List<SellerBooks> findBySaletype(String saletype);
+    List<SellerBooks> findBySellerusername(String sellerusername);
 }

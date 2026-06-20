@@ -6,7 +6,7 @@
     <title>Vintage Books - Home</title>
     <style>
         /* ==========================================================================
-           GLOBAL BASE STYLES (Shared Glassmorphic Layout Structure)
+           GLOBAL BASE STYLES (Restored Glassmorphic Layout Structure)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -20,6 +20,7 @@
             font-family: Arial, Helvetica, sans-serif;
             background: #0f172a;
             color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
@@ -54,6 +55,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
             backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
         }
 
         /* Top Navbar */
@@ -90,7 +92,9 @@
             font-size: clamp(0.68rem, 0.95vw, 0.8rem);
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
             transition: color 0.2s ease;
+            position: relative;
         }
 
         nav a:hover {
@@ -149,35 +153,40 @@
             font-weight: 400;
         }
 
-        /* Responsive Image Slider Carousel */
+        /* Responsive Hardware-Accelerated Image Slider Carousel */
         .slider-wrapper {
             position: relative;
             width: min(100%, 860px);
             margin: 0 auto;
         }
 
-        .slider {
-            display: flex;
+        .slider-viewport {
+            position: relative;
             aspect-ratio: 16 / 8.5;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
+            overflow: hidden;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.15);
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
 
-        .slider::-webkit-scrollbar {
-            display: none;
-        }
-
-        .slider img {
+        .slider-track {
+            display: flex;
             width: 100%;
-            flex: 1 0 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            scroll-snap-align: start;
+            pointer-events: none;
         }
 
         .slider-nav {
@@ -191,22 +200,33 @@
             padding: 6px 14px;
             border-radius: 999px;
             backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             border: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 10;
         }
 
-        .slider-nav a {
+        .slider-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: #ffffff;
             opacity: 0.35;
-            transition: opacity 0.2s, background-color 0.2s;
+            cursor: pointer;
+            transition: opacity 0.2s, background-color 0.2s, transform 0.2s;
+            border: none;
+            outline: none;
         }
 
-        .slider-nav a:hover,
-        .slider-nav a:focus {
+        .slider-dot:hover,
+        .slider-dot:focus {
             opacity: 1;
             background: #5eead4;
+        }
+
+        .slider-dot.active {
+            opacity: 1;
+            background: #5eead4;
+            transform: scale(1.2);
         }
 
         .lead {
@@ -250,22 +270,39 @@
             fill: #fbbf24;
         }
 
-        .feature {
-            margin-bottom: 22px;
+        /* Feature Card Grid Layout */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
         }
 
-        .feature:last-child {
-            margin-bottom: 0;
+        .feature-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
         }
 
-        .feature h3 {
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(94, 234, 212, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .feature-card.full-width {
+            grid-column: span 2;
+        }
+
+        .feature-card h3 {
             margin-bottom: 6px;
             color: #f8fafc;
             font-size: 1.08rem;
             font-weight: 700;
         }
 
-        .feature p {
+        .feature-card p {
             color: #94a3b8;
             font-size: 0.92rem;
             line-height: 1.6;
@@ -314,12 +351,18 @@
            RESPONSIVE STRUCTURAL OVERRIDES
            ========================================================================== */
         @media (max-width: 980px) {
+            body {
+                overflow-y: auto;
+            }
+
             .page-shell {
-                height: 100vh;
+                height: auto;
+                min-height: 100vh;
             }
 
             .page-box {
-                height: calc(100vh - 20px);
+                height: auto;
+                min-height: calc(100vh - 20px);
             }
 
             nav {
@@ -337,6 +380,14 @@
                 padding: 20px 14px;
                 gap: 20px;
             }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card.full-width {
+                grid-column: span 1;
+            }
         }
 
         @media (max-width: 520px) {
@@ -350,6 +401,10 @@
 
             .content-scroller {
                 padding: 16px 12px;
+            }
+            
+            .slider-viewport {
+                aspect-ratio: 16 / 10;
             }
         }
     </style>
@@ -378,16 +433,21 @@
                 </section>
 
                 <section class="slider-wrapper" aria-label="Featured vintage books">
-                    <div class="slider">
-                        <img id="img1" src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000&auto=format&fit=crop" alt="Stack of classic leather books">
-                        <img id="img2" src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1000&auto=format&fit=crop" alt="Open books aligned on a wooden shelf">
-                        <img id="img3" src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop" alt="A collection of vintage books in a warm study room">
+                    <div class="slider-viewport">
+                        <div class="slider-track" id="sliderTrack">
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000&auto=format&fit=crop" alt="Stack of classic leather books">
+                            </div>
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1000&auto=format&fit=crop" alt="Open books aligned on a wooden shelf">
+                            </div>
+                            <div class="slide">
+                                <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1000&auto=format&fit=crop" alt="A collection of vintage books in a warm study room">
+                            </div>
+                        </div>
                     </div>
-                    <div class="slider-nav" aria-label="Slider navigation">
-                        <a href="#img1" aria-label="Show first slide"></a>
-                        <a href="#img2" aria-label="Show second slide"></a>
-                        <a href="#img3" aria-label="Show third slide"></a>
-                    </div>
+                    <div class="slider-nav" id="sliderNav" aria-label="Slider navigation">
+                        </div>
                 </section>
 
                 <p class="lead">
@@ -400,29 +460,31 @@
                         Why BookBazaar?
                     </h2>
 
-                    <div class="feature">
-                        <h3>Unearth Literary Gems</h3>
-                        <p>Dive into an expansive collection of second-hand books, ranging from timeless classics to contemporary masterpieces. Our diverse selection caters to every genre and taste.</p>
-                    </div>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>Unearth Literary Gems</h3>
+                            <p>Dive into an expansive collection of second-hand books, ranging from timeless classics to contemporary masterpieces. Our diverse selection caters to every genre and taste.</p>
+                        </div>
 
-                    <div class="feature">
-                        <h3>Eco-Conscious Reading</h3>
-                        <p>By embracing preloved books, you enjoy an affordable reading experience while supporting sustainable practices and extending the lifespan of literary treasures.</p>
-                    </div>
+                        <div class="feature-card">
+                            <h3>Eco-Conscious Reading</h3>
+                            <p>By embracing preloved books, you enjoy an affordable reading experience while supporting sustainable practices and extending the lifespan of literary treasures.</p>
+                        </div>
 
-                    <div class="feature">
-                        <h3>Connect with Fellow Bibliophiles</h3>
-                        <p>BookBazaar is more than a marketplace. It is a community of book enthusiasts where readers can share recommendations and connect over the written word.</p>
-                    </div>
+                        <div class="feature-card">
+                            <h3>Connect with Fellow Bibliophiles</h3>
+                            <p>BookBazaar is more than a marketplace. It is a community of book enthusiasts where readers can share recommendations and connect over the written word.</p>
+                        </div>
 
-                    <div class="feature">
-                        <h3>Easy Buying and Selling</h3>
-                        <p>List your books effortlessly, browse detailed descriptions, and communicate with sellers to find the right book at the right price.</p>
-                    </div>
+                        <div class="feature-card">
+                            <h3>Easy Buying and Selling</h3>
+                            <p>List your books effortlessly, browse detailed descriptions, and communicate with sellers to find the right book at the right price.</p>
+                        </div>
 
-                    <div class="feature">
-                        <h3>Secure Transactions</h3>
-                        <p>Your safety and privacy matter. BookBazaar focuses on creating a seamless and trustworthy shopping experience for every reader.</p>
+                        <div class="feature-card full-width">
+                            <h3>Secure Transactions</h3>
+                            <p>Your safety and privacy matter. BookBazaar focuses on creating a seamless and trustworthy shopping experience for every reader.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -431,15 +493,66 @@
 
                     <div class="footer-links">
                         <a href="#">About Us</a>
-                        <a th:href=@{/sellingabook}>Sell a Book</a>
+                        <a th:href="@{/sellingabook}">Sell a Book</a>
                         <a href="#">Buy a Book</a>
-                        <a th:href=@{/sellercontactus}>Contact Us</a>
+                        <a th:href="@{/sellercontactus}">Contact Us</a>
                     </div>
                 </footer>
                 
             </div>
         </main>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // ──── HARDWARE ACCELERATED CAROUSEL MOTOR ────
+            const track = document.getElementById("sliderTrack");
+            const slides = Array.from(track.children);
+            const navContainer = document.getElementById("sliderNav");
+            let currentIndex = 0;
+            let slideInterval;
+
+            // Generate dot indicators programmatically
+            slides.forEach((_, index) => {
+                const dot = document.createElement("button");
+                dot.classList.add("slider-dot");
+                if (index === 0) dot.classList.add("active");
+                dot.setAttribute("aria-label", `Go to slide ${index + 1}`);
+                navContainer.appendChild(dot);
+            });
+
+            const dots = Array.from(navContainer.children);
+
+            function updateSlider(index) {
+                track.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach(dot => dot.classList.remove("active"));
+                dots[index].classList.add("active");
+                currentIndex = index;
+            }
+
+            function startAutoPlay() {
+                slideInterval = setInterval(() => {
+                    let nextIndex = (currentIndex + 1) % slides.length;
+                    updateSlider(nextIndex);
+                }, 5000);
+            }
+
+            function resetInterval() {
+                clearInterval(slideInterval);
+                startAutoPlay();
+            }
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => {
+                    updateSlider(index);
+                    resetInterval();
+                });
+            });
+
+            startAutoPlay();
+        });
+    </script>
 
 </body>
 </html>

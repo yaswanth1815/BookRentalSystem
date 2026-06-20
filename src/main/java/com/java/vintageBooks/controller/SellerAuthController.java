@@ -47,13 +47,6 @@ public class SellerAuthController {
         return "sellerorders";
     }
 
-    @GetMapping("/sellerprofile")
-    public String sellerProfile(){
-        return "sellerprofile";
-    }
-    
-
-
     @PostMapping("/sellersignup")
     public String sellerRegistration(Seller seller,Model model){
         if(sellerService.sellerExists(seller)){

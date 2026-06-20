@@ -28,6 +28,6 @@ public class SellerBooks {
     private String mobile;
     private String mailid;
     private String saletype;
-
+    private String sellerusername;
 }
 

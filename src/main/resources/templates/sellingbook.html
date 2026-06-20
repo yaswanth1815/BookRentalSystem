@@ -38,6 +38,7 @@
             background:
                 radial-gradient(circle at 18% 10%, rgba(94, 234, 212, 0.35), transparent 34%),
                 linear-gradient(135deg, #0f172a, #3a2e5d 58%, #7f3f36);
+            position: relative; /* Context anchor for the floating notification */
         }
 
         .page-box {
@@ -93,74 +94,96 @@
             color: #5eead4;
         }
 
-        /* Form Page Layout Adjustments */
         .content {
             flex: 1 1 auto;
             min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(240px, 0.4fr) minmax(0, 1.6fr);
+            gap: clamp(16px, 3vw, 36px);
+            padding: clamp(16px, 3.5vw, 44px);
+            overflow: hidden;
+        }
+
+        .side-intro {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: clamp(16px, 2.7vw, 32px);
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .kicker {
+            color: #5eead4;
+            font-size: 0.74rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .side-intro h1 {
+            color: #f8fafc;
+            font-size: clamp(2rem, 3.5vw, 3.2rem);
+            line-height: 1.05;
+        }
+
+        .side-intro .lead {
+            color: #c4d3e7;
+            font-size: clamp(0.85rem, 1.1vw, 1rem);
+            line-height: 1.5;
+            max-width: 320px;
+        }
+
+        .form-wrap {
+            min-height: 0;
+            width: 100%;
             overflow-y: auto;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10px;
             scrollbar-width: thin;
-            scrollbar-color: rgba(94, 234, 212, 0.62) rgba(255, 255, 255, 0.08);
+            scrollbar-color: rgba(94, 234, 212, 0.4) rgba(255, 255, 255, 0.05);
         }
 
-        .content::-webkit-scrollbar {
-            width: 8px;
+        .form-wrap::-webkit-scrollbar {
+            width: 6px;
         }
-
-        .content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .content::-webkit-scrollbar-thumb {
-            background: rgba(94, 234, 212, 0.62);
+        .form-wrap::-webkit-scrollbar-thumb {
+            background: rgba(94, 234, 212, 0.4);
             border-radius: 999px;
         }
 
-        .form-card {
+        .form-grid-card {
             width: 100%;
-            max-width: 560px;
-            margin: auto 0;
-            padding: clamp(20px, 4vw, 36px);
-            border-radius: 12px;
-            background: rgba(8, 13, 26, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(18px);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+            max-width: 680px;
+            background: rgba(8, 13, 26, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: clamp(20px, 3vw, 32px);
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .form-header h1 {
-            color: #f8fafc;
-            font-size: clamp(1.6rem, 3vw, 2.2rem);
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .form-header .lead {
-            color: #c4d3e7;
-            font-size: clamp(0.84rem, 1vw, 0.95rem);
-            line-height: 1.5;
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
         }
 
         .form-row {
-            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-row.full-width {
+            grid-column: span 2;
         }
 
         label {
             display: block;
             margin-bottom: 7px;
-            color: #5eead4; /* Teal accents for labels */
-            font-size: 0.74rem;
-            font-weight: 900;
+            color: #c4d3e7;
+            font-size: 0.72rem;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
         }
 
         input[type="text"],
@@ -168,20 +191,21 @@
         select {
             width: 100%;
             min-height: 44px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 7px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
             padding: 10px 14px;
             font-size: 0.88rem;
-            background: rgba(15, 23, 42, 0.7);
+            background: rgba(15, 23, 42, 0.6);
             color: #f8fafc;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         input:focus,
         select:focus {
             outline: none;
             border-color: #5eead4;
-            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.18);
+            background: rgba(15, 23, 42, 0.83);
+            box-shadow: 0 0 0 3px rgba(94, 234, 212, 0.15);
         }
 
         select option {
@@ -189,29 +213,27 @@
             color: #f8fafc;
         }
 
+        .action-row {
+            grid-column: span 2;
+            margin-top: 12px;
+        }
+
         input[type="submit"] {
             display: block;
             width: 100%;
             min-height: 46px;
             border: none;
-            border-radius: 7px;
+            border-radius: 8px;
             padding: 12px 18px;
-            background: #5eead4; /* Signature Teal color for submit */
+            background: #5eead4;
             color: #06201c;
             font-weight: 900;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             cursor: pointer;
-            margin-top: 28px;
-            box-shadow: 0 10px 24px rgba(94, 234, 212, 0.15);
+            box-shadow: 0 8px 20px rgba(94, 234, 212, 0.15);
             transition: transform 0.2s ease, filter 0.2s ease;
-        }
-        .book-added-message {
-            color: rgb(143, 110, 110);
-            text-align: center;
-            width: 100%;
-            margin: 10px 0;
         }
 
         input[type="submit"]:hover {
@@ -223,47 +245,101 @@
             transform: scale(0.99);
         }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 980px) {
+        /* ──── FLOATING TOAST NOTIFICATION STYLING ──── */
+        .book-added-message {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 9999;
+            min-width: 320px;
+            max-width: 480px;
+            color: #06201c;
+            background: #5eead4;
+            border-radius: 10px;
+            padding: 16px 22px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(94, 234, 212, 0.2);
+            
+            /* Entry Animation: Drops into view and stabilizes */
+            animation: toastDropIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        @keyframes toastDropIn {
+            from {
+                transform: translateY(-24px) scale(0.92);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Smooth dissolution transition applied via JS before removal */
+        .toast-leave {
+            opacity: 0 !important;
+            transform: translateY(-12px) scale(0.95) !important;
+        }
+
+        /* RESPONSIVE DESIGN BREAKPOINTS */
+        @media (max-width: 860px) {
+            body {
+                overflow-y: auto;
+            }
             .page-shell {
-                height: 100vh;
+                height: auto;
+                min-height: 100vh;
             }
-
             .page-box {
-                height: calc(100vh - 20px);
+                height: auto;
+                min-height: calc(100vh - 20px);
             }
-
             nav {
-                align-items: flex-start;
                 flex-direction: column;
+                align-items: flex-start;
             }
-
             nav ul {
                 width: 100%;
                 flex-wrap: wrap;
                 justify-content: flex-start;
             }
-
             .content {
-                padding: 24px 14px;
+                grid-template-columns: 1fr;
+                gap: 24px;
+                padding: 24px 16px;
             }
-            
-            .form-card {
-                margin: 0 auto;
+            .side-intro {
+                text-align: center;
+                align-items: center;
+            }
+            .side-intro .lead {
+                max-width: 100%;
+            }
+            /* Pin to screen bottom on tiny interfaces for enhanced reach */
+            .book-added-message {
+                top: auto;
+                bottom: 24px;
+                right: 16px;
+                left: 16px;
+                min-width: 0;
+                text-align: center;
+                animation: toastRiseUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
             }
         }
 
+        @keyframes toastRiseUp {
+            from { transform: translateY(24px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         @media (max-width: 520px) {
-            .page-shell {
-                padding: 8px;
+            .form-grid {
+                grid-template-columns: 1fr;
             }
-
-            .page-box {
-                border-radius: 14px;
-            }
-
-            .content {
-                padding: 16px 12px;
+            .form-row, .form-row.full-width, .action-row {
+                grid-column: span 1;
             }
         }
     </style>
@@ -271,6 +347,11 @@
 <body>
 
     <div class="page-shell">
+        
+        <div id="successToast" class="book-added-message" th:if="${bookAddedMessage}">
+            ✨ <span th:text="${bookAddedMessage}">Book listing submitted!</span>
+        </div>
+
         <main class="page-box">
             <nav>
                 <div class="brand">Seller Desk</div>
@@ -284,54 +365,78 @@
             </nav>
 
             <div class="content">
-                
-                <form class="form-card" method="post" th:action="@{/sellingbook}">
-                    
-                    <div class="form-header">
-                        <h1>Enter Book Details</h1>
-                        <p class="lead">Add the book information that buyers will see.</p>
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="bookname">Name of the book</label>
-                        <input type="text" id="bookname" name="bookname" required autocomplete="off">
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="author">Author</label>
-                        <input type="text" id="author" name="author" required autocomplete="off">
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="pages">Pages</label>
-                        <input type="number" id="pages" name="pages" min="1" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="price">Price</label>
-                        <input type="number" id="price" name="price" min="0" step="0.01" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" name="quantity" min="1" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <label for="select">Listing Type</label>
-                        <select id="select" name="saletype">
-                            <option value="Sell">Selling</option>
-                            <option value="Donation">Donate</option>
-                        </select>
-                    </div>
-                    
-                    <input type="submit" name="submit" value="Submit Details">
-                </form>
-                <p class="book-added-message" th:if="${bookAddedMessage}" th:text="${bookAddedMessage}"></p>
+                <aside class="side-intro">
+                    <p class="kicker">Marketplace</p>
+                    <h1>Sell a Book</h1>
+                    <p class="lead">List your textbook or novel with clear details to find active buyers instantly.</p>
+                </aside>
+
+                <div class="form-wrap">
+                    <form class="form-grid-card" method="post" th:action="@{/sellingbook}">
+                        <div class="form-grid">
+                            
+                            <div class="form-row full-width">
+                                <label for="bookname">Name of the book</label>
+                                <input type="text" id="bookname" name="bookname" required autocomplete="off">
+                            </div>
+                            
+                            <div class="form-row full-width">
+                                <label for="author">Author</label>
+                                <input type="text" id="author" name="author" required autocomplete="off">
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="pages">Pages</label>
+                                <input type="number" id="pages" name="pages" min="1" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="price">Price</label>
+                                <input type="number" id="price" name="price" min="0" step="0.01" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" id="quantity" name="quantity" min="1" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="select">Listing Type</label>
+                                <select id="select" name="saletype">
+                                    <option value="Sell">Selling</option>
+                                    <option value="Donation">Donate</option>
+                                </select>
+                            </div>
+                            
+                            <div class="action-row">
+                                <input type="submit" name="submit" value="Submit Details">
+                            </div>
+                            
+                        </div>
+                    </form>
+                </div>
                 
             </div>
         </main>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toastElement = document.getElementById("successToast");
+            
+            if (toastElement) {
+                // At 4.6 seconds, add the fading class to kick off the 400ms CSS slide/opacity transition
+                setTimeout(() => {
+                    toastElement.classList.add("toast-leave");
+                }, 4600);
+
+                // At exactly 5 seconds, remove the element completely from the DOM tree
+                setTimeout(() => {
+                    toastElement.remove();
+                }, 5000);
+            }
+        });
+    </script>
 
 </body>
 </html>

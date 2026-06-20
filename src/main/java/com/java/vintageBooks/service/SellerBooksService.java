@@ -15,7 +15,7 @@ public class SellerBooksService {
     public SellerBooks saveBook(SellerBooks currentSellerBooks,Seller seller){
         
         SellerBooks databaseSellerBook=presenceOfBook(
-                                         currentSellerBooks.getSellername(),
+                                         currentSellerBooks.getBookname(),
                                          currentSellerBooks.getAuthor(),
                                          currentSellerBooks.getSaletype()
                                          );
@@ -24,6 +24,7 @@ public class SellerBooksService {
             currentSellerBooks.setMailid(seller.getMailid());
             currentSellerBooks.setMobile(seller.getMobile());
             currentSellerBooks.setQuantityremaining(currentSellerBooks.getQuantity());
+            currentSellerBooks.setSellerusername(seller.getUsername());
             return sellerBookRepository.save(currentSellerBooks);
         }
         
@@ -41,6 +42,10 @@ public class SellerBooksService {
         return sellerBookRepository.save(databaseSellerBook);
     }
     
+    public List<SellerBooks> getSellerBooksbySellerusername(String sellerusername){
+        return sellerBookRepository.findBySellerusername(sellerusername);
+    }
+
     public SellerBooks presenceOfBook(String bookname,String author,String saletype){
         return sellerBookRepository.findByBooknameAndAuthorAndSaletype(bookname, author, saletype);
     }

@@ -255,7 +255,7 @@
             overflow-wrap: anywhere;
         }
 
-        th {
+        /* th {
             position: sticky;
             top: 0;
             z-index: 2;
@@ -265,6 +265,21 @@
             font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        } */
+
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 10; 
+            color: #99f6e4;
+            background: #11192e; 
+            font-size: clamp(0.65rem, 0.64vw, 0.68rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding-top:15px;
+            padding-bottom:15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2); 
         }
 
         td {
@@ -478,11 +493,11 @@
 
                     <div class="stats">
                         <div class="stat">
-                            <strong>2</strong>
+                            <strong th:text="${quantity}"></strong>
                             <span>Registered Books</span>
                         </div>
                         <div class="stat">
-                            <strong>4</strong>
+                            <strong th:text="${remaining}"></strong>
                             <span>Available Copies</span>
                         </div>
                     </div>
@@ -493,7 +508,7 @@
                 <div class="table-card">
                     <div class="table-head">
                         <h2>Current Listings</h2>
-                        <span class="badge">2</span>
+                        <span class="badge" th:text="${countOfRows}"></span>
                     </div>
 
                     <div class="table-wrap">
@@ -511,24 +526,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td data-label="Name">The Alchemist</td>
-                                    <td data-label="Author">Paulo Coelho</td>
-                                    <td data-label="Pages">208</td>
-                                    <td data-label="Price">120/-</td>
-                                    <td data-label="Quantity">4</td>
-                                    <td data-label="Remaining">3</td>
-                                    <td data-label="Type"><span class="type">Sell</span></td>
-                                    <td data-label="Operation"><a class="delete" href="#">Delete</a></td>
-                                </tr>
-                                <tr>
-                                    <td data-label="Name">Wings of Fire</td>
-                                    <td data-label="Author">A. P. J. Abdul Kalam</td>
-                                    <td data-label="Pages">180</td>
-                                    <td data-label="Price">60/-</td>
-                                    <td data-label="Quantity">2</td>
-                                    <td data-label="Remaining">1</td>
-                                    <td data-label="Type"><span class="type">Rent</span></td>
+                                <tr th:each="book:${listOfSellerBooks}">
+                                    <td data-label="Name" th:text="${book.bookname}"></td>
+                                    <td data-label="Author" th:text="${book.author}"></td>
+                                    <td data-label="Pages" th:text="${book.pages}"></td>
+                                    <td data-label="Price" th:text="${book.price}"></td>
+                                    <td data-label="Quantity" th:text="${book.quantity}"></td>
+                                    <td data-label="Left" th:text="${book.quantityremaining}"></td>
+                                    <td data-label="Type" th:text="${book.saletype}"><span class="type"></span></td>
                                     <td data-label="Operation"><a class="delete" href="#">Delete</a></td>
                                 </tr>
                             </tbody>
