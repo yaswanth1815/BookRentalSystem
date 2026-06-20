@@ -18,15 +18,16 @@ public class SellerBooks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
-    private String name;
+    private String sellername;
+    private String bookname;
     private String author;
     private String pages;
     private String price;
     private String quantity;
-    private String quantity_remaining;
+    private String quantityremaining;
     private String mobile;
     private String mailid;
-    private String type;
+    private String saletype;
 
 }
+
