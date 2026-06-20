@@ -27,6 +27,33 @@ public class SellerAuthController {
         return "sellersignup";
     }
 
+    @GetMapping("/sellerhomepage")
+    public String sellerHome(){
+        return "sellerhome";
+    }
+
+    @GetMapping("/sellingabook")
+    public String sellABook(){
+        return "sellingbook";
+    }
+
+    @GetMapping("/sellercontactus")
+    public String sellerContact(){
+        return "sellercontactus";
+    }
+
+    @GetMapping("/sellerorders")
+    public String sellerOrders(){
+        return "sellerorders";
+    }
+
+    @GetMapping("/sellerprofile")
+    public String sellerProfile(){
+        return "sellerprofile";
+    }
+    
+
+
     @PostMapping("/sellersignup")
     public String sellerRegistration(Seller seller,Model model){
         if(sellerService.sellerExists(seller)){

@@ -207,6 +207,12 @@
             box-shadow: 0 10px 24px rgba(94, 234, 212, 0.15);
             transition: transform 0.2s ease, filter 0.2s ease;
         }
+        .book-added-message {
+            color: rgb(143, 110, 110);
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
 
         input[type="submit"]:hover {
             transform: translateY(-1px);
@@ -269,11 +275,11 @@
             <nav>
                 <div class="brand">Seller Desk</div>
                 <ul>
-                    <li><a href="sellerhome.html">Home</a></li>
-                    <li><a href="sellingbook.html">Sell a Book</a></li>
-                    <li><a href="sellercontactus.html">Contact Us</a></li>
-                    <li><a href="sellerorders.html">Orders</a></li>
-                    <li><a href="sellerprofile.html">Profile</a></li>
+                    <li><a th:href="@{/sellerhomepage}">Home</a></li>
+                    <li><a th:href="@{/sellingabook}">Sell a Book</a></li>
+                    <li><a th:href="@{/sellercontactus}">Contact Us</a></li>
+                    <li><a th:href="@{/sellerorders}">Orders</a></li>
+                    <li><a th:href="@{/sellerprofile}">Profile</a></li>
                 </ul>
             </nav>
 
@@ -321,6 +327,7 @@
                     
                     <input type="submit" name="submit" value="Submit Details">
                 </form>
+                <p class="book-added-message" th:if="${bookAddedMessage}" th:text="${bookAddedMessage}"></p>
                 
             </div>
         </main>

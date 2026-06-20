@@ -23,8 +23,39 @@ public class BuyerAuthController {
         return "buyersignup";
     }
 
+    @GetMapping("/buyershome")
+    public String buyerHome(){
+        return "buyerhome";
+    }
+
+    @GetMapping("/buyersbuyingabook")
+    public String buyABook(){
+        return "buyingbook";
+    }
+
+    @GetMapping("/buyersvintagebooks")
+    public String vintageBook(){
+        return "vintagebooks";
+    }
+
+    @GetMapping("/buyerscontactus")
+    public String buyerContactUs(){
+        return "buyercontactus";
+    }
+
+    @GetMapping("/buyerscart")
+    public String buyerCart(){
+        return "buyercart";
+    }
+
+    @GetMapping("/buyersprofile")
+    public String buyerProfile(){
+        return "buyerprofile";
+    }
+
     @Autowired
     private BuyerService buyerService;
+
     @PostMapping("/buyersignup")
     public String buyerSignup(Buyer buyer,Model model){
         if(buyerService.buyerExists(buyer)){
