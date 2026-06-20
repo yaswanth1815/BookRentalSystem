@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Core Access - Authorized Administrators Only</title>
+    <style>
+        /* ==========================================================================
+           ENTERPRISE CORE VARIABLES (High-Fidelity Color Space Matrix)
+           ========================================================================== */
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --emerald-400: #34d399;
+            --cyan-400: #22d3ee;
+            --amber-400: #fbbf24;
+            --rose-500: #f43f5e;
+            --neon-glow-cyan: rgba(34, 211, 238, 0.15);
+            --glass-surface: rgba(15, 23, 42, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        /* ==========================================================================
+           RESETS & HARDWARE-ACCELERATED WRAPPERS
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            font-family: var(--font-display);
+            background-color: var(--slate-950);
+            color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* Dynamic Cosmic Ray Animated Background Canopy */
+        .viewport-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(34, 211, 238, 0.12), transparent 45%),
+                radial-gradient(circle at 15% 85%, rgba(52, 211, 153, 0.08), transparent 40%),
+                linear-gradient(160deg, #020617 0%, #0f172a 60%, #1e1b4b 100%);
+        }
+
+        /* ==========================================================================
+           LEFT COLUMN: LIVING TELEMETRY DASHBOARD TERMINAL
+           ========================================================================== */
+        .telemetry-canopy {
+            height: 100%;
+            padding: clamp(30px, 5vw, 60px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-right: 1px solid var(--glass-border);
+            background: rgba(2, 6, 23, 0.3);
+            backdrop-filter: blur(8px);
+        }
+
+        .system-identity {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-core {
+            width: 10px;
+            height: 10px;
+            background-color: var(--emerald-400);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--emerald-400);
+            animation: core-throb 2s infinite ease-in-out;
+        }
+
+        .system-identity h2 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--cyan-400);
+            font-weight: 800;
+        }
+
+        .hero-narrative h1 {
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero-narrative p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            max-width: 540px;
+        }
+
+        /* Live Matrix Metrics Grid */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 40px;
+            max-width: 600px;
+        }
+
+        .matrix-node {
+            background: var(--glass-surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: var(--font-mono);
+            transition: all 0.3s ease;
+        }
+
+        .matrix-node:hover {
+            border-color: rgba(34, 211, 238, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .node-tag {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .node-stat {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            transition: color 0.4s ease;
+        }
+
+        .stat-prime { color: var(--emerald-400); }
+        .stat-cyan { color: var(--cyan-400); }
+
+        /* Visual indicator for a telemetry data update */
+        .flash-update {
+            animation: text-flash 0.4s ease-out;
+        }
+
+        /* ==========================================================================
+           RIGHT COLUMN: CRYPTOGRAPHIC AUTHENTICATION ARCH
+           ========================================================================== */
+        .auth-canopy {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .auth-node-wrapper {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .node-header {
+            margin-bottom: 36px;
+        }
+
+        .node-header h3 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .node-header p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* Unified Form Field Matrix */
+        .field-block {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .field-block label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--amber-400);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .input-carrier {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-carrier input {
+            width: 100%;
+            height: 52px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0 16px 0 44px;
+            color: #ffffff;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-carrier input:focus {
+            border-color: var(--cyan-400);
+            background: var(--slate-900);
+            box-shadow: 0 0 20px var(--neon-glow-cyan);
+        }
+
+        .carrier-icon {
+            position: absolute;
+            left: 16px;
+            width: 16px;
+            height: 16px;
+            fill: #475569;
+            transition: fill 0.25s ease;
+            pointer-events: none;
+        }
+
+        .input-carrier input:focus ~ .carrier-icon {
+            fill: var(--cyan-400);
+        }
+
+        /* Password Visibility Core Toggle */
+        .visibility-shifter {
+            position: absolute;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        .visibility-shifter:hover { color: var(--cyan-400); }
+        .visibility-shifter svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* Dynamic Status Feedback Node Banner */
+        .feedback-node {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(244, 63, 94, 0.08);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            border-radius: 8px;
+            color: #fda4af;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            font-family: var(--font-mono);
+        }
+
+        .feedback-node svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+        /* Command Authorization Submit Mechanism */
+        .submit-mechanism {
+            width: 100%;
+            height: 52px;
+            background: linear-gradient(135deg, var(--cyan-400) 0%, #06b6d4 100%);
+            border: none;
+            border-radius: 8px;
+            color: var(--slate-950);
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(34, 211, 238, 0.2);
+        }
+
+        .submit-mechanism:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 30px rgba(34, 211, 238, 0.35);
+            filter: brightness(1.1);
+        }
+
+        /* Escape System Link Path */
+        .escape-hatch {
+            margin-top: 32px;
+            text-align: center;
+        }
+
+        .escape-hatch a {
+            color: #475569;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .escape-hatch a:hover { color: #f1f5f9; }
+
+        /* ==========================================================================
+           KEYFRAMES & RESPONSIVE BREAKPOINT SHIFTERS
+           ========================================================================== */
+        @keyframes core-throb {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; box-shadow: 0 0 18px var(--emerald-400); }
+        }
+
+        @keyframes text-flash {
+            0% { opacity: 0.5; color: var(--cyan-400); }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 1024px) {
+            .viewport-wrapper { grid-template-columns: 1fr; overflow-y: auto; height: auto; min-height: 100vh; }
+            .telemetry-canopy { height: auto; padding: 40px 24px; gap: 40px; }
+            .auth-canopy { height: auto; padding: 60px 24px; }
+            .matrix-grid { max-width: 100%; }
+        }
+
+        @media (max-width: 540px) {
+            .matrix-grid { grid-template-columns: 1fr; }
+            .auth-node-wrapper { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="viewport-wrapper">
+        
+        <aside class="telemetry-canopy">
+            <div class="system-identity">
+                <span class="pulse-core"></span>
+                <h2>Vintage Books Internal Engine</h2>
+            </div>
+
+            <div class="hero-narrative">
+                <h1>Secure Kernel Gateway</h1>
+                <p>System administrator control node. Access requires continuous cryptographic validation matching root certificate arrays.</p>
+                
+                <div class="matrix-grid">
+                    <div class="matrix-node">
+                        <span class="node-tag">Security Protocol</span>
+                        <span class="node-stat stat-prime" id="metric-protocol">E2EE ACTIVE</span>
+                    </div>
+                    <div class="matrix-node">
+                        <span class="node-tag">Cluster Load</span>
+                        <span class="node-stat stat-cyan" id="metric-load">0.024 ms</span>
+                    </div>
+                    <div class="matrix-node">
+                        <span class="node-tag">Data Routing</span>
+                        <span class="node-stat" id="metric-routing" style="color: #cbd5e1;">Proxy-Tunnel [A]</span>
+                    </div>
+                    <div class="matrix-node">
+                        <span class="node-tag">Memory Pool</span>
+                        <span class="node-stat" id="metric-env" style="color: #cbd5e1;">Heap: 412MB</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="system-identity" style="opacity: 0.35;">
+                <p style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 1px;">NODE REF: //BRS-SYS-A26</p>
+            </div>
+        </aside>
+
+        <main class="auth-canopy">
+            <div class="auth-node-wrapper">
+                
+                <header class="node-header">
+                    <h3>Identity Check</h3>
+                    <p>Provide credential structures to open access tunnel.</p>
+                </header>
+
+                <div class="feedback-node" id="errorNode" role="alert">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <span id="errorNodeText">Cryptographic token size mismatch.</span>
+                </div>
+
+                <form id="secureAdminForm"  th:action="@{/adminsignin}" method="POST" autocomplete="off">
+                    
+                    <div class="field-block">
+                        <label for="secretId">Secret Key ID</label>
+                        <div class="input-carrier">
+                            <input type="text" id="secretId" name="secretId" placeholder="ADM-CORE-XXXX" required>
+                            <svg class="carrier-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </div>
+                    </div>
+
+                    <div class="field-block">
+                        <label for="secretPassword">Secret Password</label>
+                        <div class="input-carrier">
+                            <input type="password" id="secretPassword" name="secretPassword" placeholder="••••••••••••••••" required>
+                            <svg class="carrier-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                            <button type="button" class="visibility-shifter" id="shifterBtn" aria-label="Toggle password text obfuscation visibility">
+                                <svg viewBox="0 0 24 24" id="shifterIcon"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/> *</svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-mechanism">
+                        Authorize Terminal Session
+                    </button>
+                </form>
+
+                <div class="escape-hatch">
+                    <a href="/" th:href="@{/}">← Disconnect Terminal</a>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const formNode = document.getElementById("secureAdminForm");
+            const idField = document.getElementById("secretId");
+            const passField = document.getElementById("secretPassword");
+            const errNode = document.getElementById("errorNode");
+            const errText = document.getElementById("errorNodeText");
+            const shiftBtn = document.getElementById("shifterBtn");
+            const shiftIcon = document.getElementById("shifterIcon");
+
+            // Telemetry DOM Target Nodes
+            const metricLoad = document.getElementById("metric-load");
+            const metricRouting = document.getElementById("metric-routing");
+            const metricEnv = document.getElementById("metric-env");
+            const metricProtocol = document.getElementById("metric-protocol");
+
+            // Mock Data Pools for Simulated Telemetry Changes
+            const routingPaths = ["Proxy-Tunnel [A]", "Isolated DMZ", "Encrypted Mesh", "Node-Shunted [B]"];
+            const protocols = ["E2EE ACTIVE", "TLS 1.3 SECURE", "AES-256 COMPLY"];
+
+            // --- 4 SECOND REFRESH TIMEOUT SIMULATION ENGINE ---
+            setInterval(() => {
+                // 1. Calculate random low API response latency
+                const currentLoad = (Math.random() * (0.095 - 0.012) + 0.012).toFixed(3);
+                metricLoad.innerText = `${currentLoad} ms`;
+                triggerTextFlash(metricLoad);
+
+                // 2. Cycle randomly through secure enterprise routing protocols
+                const targetRoute = routingPaths[Math.floor(Math.random() * routingPaths.length)];
+                metricRouting.innerText = targetRoute;
+                triggerTextFlash(metricRouting);
+
+                // 3. Increment JVM/System memory pools to display active heap allocations
+                const simulatedHeapUsage = Math.floor(Math.random() * (490 - 380) + 380);
+                metricEnv.innerText = `Heap: ${simulatedHeapUsage}MB`;
+                triggerTextFlash(metricEnv);
+
+                // 4. Periodically alternate protocol encryption states cleanly
+                if (Math.random() > 0.6) {
+                    const nextProto = protocols[Math.floor(Math.random() * protocols.length)];
+                    metricProtocol.innerText = nextProto;
+                    triggerTextFlash(metricProtocol);
+                }
+            }, 4000);
+
+            // UI helper to add real-time flash animation on update
+            function triggerTextFlash(element) {
+                element.classList.remove("flash-update");
+                void element.offsetWidth; // Force CSS reflow refresh
+                element.classList.add("flash-update");
+            }
+
+            // Input Visibility Unmask Engine
+            shiftBtn.addEventListener("click", function() {
+                if (passField.type === "password") {
+                    passField.type = "text";
+                    shiftIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.82l2.92 2.92c1.51-1.26 2.7-2.89 3.44-4.74-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+                } else {
+                    passField.type = "password";
+                    shiftIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+                }
+            });
+
+            // Submission Guard Rules
+            formNode.addEventListener("submit", function(event) {
+                const checkedId = idField.value.trim();
+                const checkedPass = passField.value;
+
+                if (checkedId.length < 4 || checkedPass.length < 6) {
+                    event.preventDefault();
+                    errText.innerText = "Security Halt: Field lengths do not conform to structural rules.";
+                    errNode.style.display = "flex";
+                    return false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

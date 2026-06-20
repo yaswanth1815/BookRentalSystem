@@ -87,6 +87,7 @@
             justify-content: center;
             gap: 20px;
             height: 100%;
+            position: relative;
         }
 
         .role {
@@ -159,6 +160,25 @@
             background: #d1fae5;
         }
 
+        /* Admin Shortcut Portal Link */
+        .admin-portal-link {
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        .admin-portal-link a {
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .admin-portal-link a:hover {
+            color: #111827;
+            text-decoration: underline;
+        }
+
         /* Responsive design without vertical breaks */
         @media (max-width: 768px) {
             .welcome {
@@ -194,8 +214,8 @@
                     <h2>Seller</h2>
                     <p>List books, manage your rentals, and check buyer requests.</p>
                     <div class="buttons">
-                        <a class="button" th:href=@{/sellersignin}>Sign In</a>
-                        <a class="button secondary" th:href=@{/sellersignup}>Sign Up</a>
+                        <a class="button" th:href="@{/sellersignin}">Sign In</a>
+                        <a class="button secondary" th:href="@{/sellersignup}">Sign Up</a>
                     </div>
                 </section>
 
@@ -203,10 +223,14 @@
                     <h2>Buyer</h2>
                     <p>Browse available books, add items to your cart, and manage purchases.</p>
                     <div class="buttons">
-                        <a class="button" th:href=@{/buyersignin}>Sign In</a>
-                        <a class="button secondary" th:href=@{/buyersignup}>Sign Up</a>
+                        <a class="button" th:href="@{/buyersignin}">Sign In</a>
+                        <a class="button secondary" th:href="@{/buyersignup}">Sign Up</a>
                     </div>
                 </section>
+
+                <div class="admin-portal-link">
+                    <a th:href="@{/adminsignin}">Log in as System Admin</a>
+                </div>
             </div>
 
         </section>
