@@ -163,6 +163,12 @@
             font-weight: 700;
             text-decoration: none;
         }
+        .success-message {
+            color: rgb(143, 110, 110);
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
 
         .signup-link a:hover {
             text-decoration: underline;
@@ -243,7 +249,8 @@
 
                 <input type="submit" value="Login">
             </form>
-            <p class="error-message" th:if="{sellerloginerror}" th:text="{sellersigninerror}"></p>
+            <p class="success-message" th:if="${selleraddedsuccess}" th:text="${selleraddedsuccess}"></p>
+            <p class="error-message" th:if="${sellerloginerror}" th:text="${sellerloginerror}"></p>
             <p class="signup-link">
                 New User?
                 <a th:href="@{/sellersignup}">Signup Here</a>

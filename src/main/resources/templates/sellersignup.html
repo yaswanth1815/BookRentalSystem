@@ -184,6 +184,7 @@
             width: 100%;
             margin: 10px 0;
         }
+        
 
         /* Responsive Layout Overrides */
         @media (max-width: 800px) {
@@ -269,7 +270,7 @@
 
                 <input type="submit" value="Signup">
             </form>
-            <p class="error-message" th:if="{sellersignuperror}" th:texg="{sellersignuperror}"></p>
+            <p class="error-message" th:if="${sellersignuperror}" th:texg="${sellersignuperror}"></p>
             <p class="signin-link">
                 Already have an account?
                 <a th:href="@{/sellersignin}">Sign In</a>

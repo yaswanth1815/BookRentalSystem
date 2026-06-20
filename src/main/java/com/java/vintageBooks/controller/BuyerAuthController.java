@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.java.vintageBooks.entity.Buyer;
 import com.java.vintageBooks.service.BuyerService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class BuyerAuthController {
 
@@ -30,15 +32,19 @@ public class BuyerAuthController {
             return "buyersignup";
         }
         buyerService.saveBuyer(buyer);
+        model.addAttribute("buyeraddedsuccess","Buyer Added Successfully");
         return "buyersignin";
     }
 
     @PostMapping("/buyersignin")
-    public String buyerLogin(String username,String password,Model model){
-        if(buyerService.buyerLogin(username,password)!=null){
+    public String buyerLogin(String username,String password,Model model,HttpSession session){
+        
+        Buyer buyer=buyerService.buyerLogin(username, password);
+        if(buyer!=null){
+            session.setAttribute("buyerobject",buyer);
             return "buyerhome";
         }
-        model.addAttribute("error","Invalid Credentials");
+        model.addAttribute("buyersigninerror","Invalid Credentials");
         return "buyersignin";
     }
 }

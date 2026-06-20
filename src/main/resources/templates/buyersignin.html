@@ -168,7 +168,12 @@
         .signup-link a:hover {
             text-decoration: underline;
         }
-
+        .success-message {
+            color: rgb(143, 110, 110);
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
         @media (max-width: 800px) {
             .signin-page {
                 max-width: 460px;
@@ -244,6 +249,7 @@
 
                 <input type="submit" value="Login">
             </form>
+            <p class="success-message" th:if="${buyeraddedsuccess}" th:text="${buyeraddedsuccess}"></p>
             <p class="error-message" th:if="${buyersigninerror}" th:text="${buyersigninerror}"></p>
             <p class="signup-link">
                 New User?

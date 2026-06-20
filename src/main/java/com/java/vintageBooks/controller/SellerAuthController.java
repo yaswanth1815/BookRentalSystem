@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.java.vintageBooks.entity.Seller;
 import com.java.vintageBooks.service.SellerService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class SellerAuthController {
     
@@ -32,12 +34,15 @@ public class SellerAuthController {
             return "sellersignup";
         }
         sellerService.saveSeller(seller);
+        model.addAttribute("selleraddedsuccess","Seller Added Successfully");
         return "sellersignin";
     }
 
     @PostMapping("/sellersignin")
-    public String sellerLogin(String username,String password,Model model){
-        if(sellerService.login(username,password) != null){
+    public String sellerLogin(String username,String password,Model model,HttpSession session){
+        Seller seller=sellerService.login(username,password);
+        if(seller!= null){
+            session.setAttribute("sellerobject", seller);
             return "sellerhome";
         }
         model.addAttribute("sellerloginerror","Invalid Credentials");
