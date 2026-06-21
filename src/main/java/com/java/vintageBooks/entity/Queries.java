@@ -4,26 +4,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "buyercart")
+@Table(name="")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuyerCart {
-
+public class Queries {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String buyerusername;
-    private Integer quantity;
-    @ManyToOne
-    @JoinColumn(name="id")
-    private SellerBooks sellerbooks;
+    private Integer queryid;
+    private String username;
+    private String email;
+    private String message;
+    private String usertype;
+
 }
