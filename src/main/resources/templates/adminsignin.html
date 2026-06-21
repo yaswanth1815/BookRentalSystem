@@ -308,6 +308,13 @@
             margin-top: 32px;
             text-align: center;
         }
+        
+        .error-message {
+            color: red;
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
 
         .escape-hatch a {
             color: #475569;
@@ -404,7 +411,7 @@
                     <div class="field-block">
                         <label for="secretId">Secret Key ID</label>
                         <div class="input-carrier">
-                            <input type="text" id="secretId" name="secretId" placeholder="ADM-CORE-XXXX" required>
+                            <input type="text" id="secretId" name="adminname" placeholder="ADM-CORE-XXXX" required>
                             <svg class="carrier-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                         </div>
                     </div>
@@ -412,7 +419,7 @@
                     <div class="field-block">
                         <label for="secretPassword">Secret Password</label>
                         <div class="input-carrier">
-                            <input type="password" id="secretPassword" name="secretPassword" placeholder="••••••••••••••••" required>
+                            <input type="text" id="secretPassword" name="adminpassword" placeholder="••••••••••••••••" required>
                             <svg class="carrier-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
                             <button type="button" class="visibility-shifter" id="shifterBtn" aria-label="Toggle password text obfuscation visibility">
                                 <svg viewBox="0 0 24 24" id="shifterIcon"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/> *</svg>
@@ -424,9 +431,9 @@
                         Authorize Terminal Session
                     </button>
                 </form>
-
+                <p class="error-message" th:if="${errormessage}" th:text="${errormessage}"></p>
                 <div class="escape-hatch">
-                    <a href="/" th:href="@{/}">← Disconnect Terminal</a>
+                    <a  th:href="@{/}">← Disconnect Terminal</a>
                 </div>
 
             </div>

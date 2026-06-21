@@ -246,7 +246,6 @@
             <section class="content">
                 <h1>Available Books</h1>
                 <p class="lead-text">Hello, buyer. Browse books currently available for purchase, rent, or donation.</p>
-
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -260,7 +259,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr th:each="book:{$books}">
                                 <td>The Alchemist</td>
                                 <td>Paulo Coelho</td>
                                 <td>208</td>
@@ -268,22 +267,8 @@
                                 <td>Sell</td>
                                 <td><a href="buyercart.html">Add to Cart</a></td>
                             </tr>
-                            <tr>
-                                <td>Wings of Fire</td>
-                                <td>A. P. J. Abdul Kalam</td>
-                                <td>180</td>
-                                <td>60/-</td>
-                                <td>Rent</td>
-                                <td><a href="buyercart.html">Add to Cart</a></td>
-                            </tr>
-                            <tr>
-                                <td>Old Stories Collection</td>
-                                <td>Various</td>
-                                <td>300</td>
-                                <td>0/-</td>
-                                <td>Donation</td>
-                                <td><a href="buyercart.html">Add to Cart</a></td>
-                            </tr>
+                            
+                            
                         </tbody>
                     </table>
                 </div>

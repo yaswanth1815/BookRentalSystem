@@ -82,51 +82,200 @@
 
         /* Base Content Container - keeps content inside the unscrollable box */
         .content {
-            padding: clamp(20px, 4vw, 36px);
+            padding: clamp(24px, 4vw, 40px) clamp(16px, 3vw, 36px);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
             position: relative;
+            justify-content: center;
         }
 
-        .content h1 {
-            margin-bottom: 8px;
-            font-size: clamp(2rem, 5vw, 2.8rem);
+        /* Two Column Split Architecture with Side-by-Side Unified Boxes */
+        .layout-split {
+            display: flex;
+            gap: 32px;
+            align-items: stretch; /* Forces equal heights on both containers */
+            width: 100%;
+            max-width: 1060px;
+            margin: 0 auto;
+        }
+
+        /* Shared Box Style Properties */
+        .contact-card, .form-card {
+            flex: 1;
+            background: #151d30;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 24px;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-card h1, .form-card h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
             color: #ffffff;
+            line-height: 1.2;
+        }
+
+        .lead-text, .form-card p {
+            color: #cbd5e1;
+            font-size: 0.85rem;
+            margin-top: 2px;
+            line-height: 1.4;
+            margin-bottom: 20px;
         }
 
         /* ==========================================================================
-           SPECIFIC INTERFACE COMPONENTS
+           LEFT BOX COMPONENTS
            ========================================================================== */
-        .lead-text {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            margin-top: 4px;
-            line-height: 1.5;
-        }
-
-        /* Clean, responsive informational layout block */
         .info-block {
-            margin-top: 24px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            max-width: 600px;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 24px;
         }
 
         .info-item {
-            background: #151d30;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 20px;
-            border-radius: 8px;
+            background: rgba(11, 15, 25, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px 16px;
+            border-radius: 6px;
             color: #e2e8f0;
-            font-size: 1rem;
+            font-size: 0.88rem;
         }
 
         .info-item strong {
             color: #fbbf24; /* Rich Gold highlight color */
             margin-right: 6px;
+        }
+
+        .social-networks h3 {
+            color: #fbbf24;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: rgba(11, 15, 25, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .social-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .social-btn:hover {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           RIGHT BOX COMPONENTS
+           ========================================================================== */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            color: #fbbf24;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 900;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(11, 15, 25, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.88rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: #1a243c;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 80px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 11px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 6px;
+            color: #0b0f19;
+            font-size: 0.82rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+            margin-top: 4px;
+        }
+
+        .submit-btn:hover {
+            background: #0ea5e9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(56, 189, 248, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .query-message {
+            color: rgb(180, 140, 140);
+            text-align: center;
+            width: 100%;
+            margin: 8px 0;
+            font-size: 0.82rem;
         }
 
         /* Custom Scrollbars for panels or content sections */
@@ -147,6 +296,18 @@
         /* ==========================================================================
            RESPONSIVE BREAKPOINTS
            ========================================================================== */
+        @media (max-width: 860px) {
+            .layout-split {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+            }
+            .contact-card, .form-card {
+                max-width: 500px;
+                width: 100%;
+            }
+        }
+
         @media (max-width: 720px) {
             .page-shell {
                 padding: 8px;
@@ -168,6 +329,11 @@
 
             .content {
                 padding: 16px 12px;
+                justify-content: flex-start;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -188,17 +354,72 @@
             </nav>
 
             <section class="content">
-                <h1>We Are Here to Help You</h1>
-                <p class="lead-text">Connect with us without any hesitation.</p>
 
-                <div class="info-block">
-                    <div class="info-item">
-                        <strong>Phone:</strong> +91 0987654321
+                <div class="layout-split">
+                    
+                    <div class="contact-card">
+                        <h1>We Are Here to Help You</h1>
+                        <p class="lead-text">Connect with us without any hesitation.</p>
+
+                        <div class="info-block">
+                            <div class="info-item">
+                                <strong>Phone:</strong> +91 0987654321
+                            </div>
+                            <div class="info-item">
+                                <strong>Email:</strong> bookstore@gmail.com
+                            </div>
+                        </div>
+
+                        <div class="social-networks">
+                            <h3>Social Ecosystems</h3>
+                            <div class="social-grid">
+                                <a href="mailto:bookstore@gmail.com" class="social-btn">
+                                    <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                    Gmail
+                                </a>
+                                <a href="https://instagram.com" target="_blank" class="social-btn">
+                                    <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m4.4 3.5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9m0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5m4.75-.75a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/></svg>
+                                    Instagram
+                                </a>
+                                <a href="https://facebook.com" target="_blank" class="social-btn">
+                                    <svg viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.8z"/></svg>
+                                    Facebook
+                                </a>
+                                <a href="https://linkedin.com" target="_blank" class="social-btn">
+                                    <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                                    LinkedIn
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <strong>Email:</strong> bookstore@gmail.com
+
+                    <div class="form-card">
+                        <h2>Send a Message</h2>
+                        <p>Have an inquiry or feedback? Drop us a brief update note below.</p>
+                        
+                        <form th:action="@{/buyerquery}" method="POST">
+                            <div class="form-group">
+                                <label for="clientName">Your Name</label>
+                                <input type="text" id="clientName" name="username" placeholder="Enter your full name" required autocomplete="name">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="clientEmail">Email Address</label>
+                                <input type="email" id="clientEmail" name="email" placeholder="name@domain.com" required autocomplete="email">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="clientMessage">Message Details</label>
+                                <textarea id="clientMessage" name="message" placeholder="Type your message here..." required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-btn">Send Message</button>
+                        </form>
+                        <p class="query-message" th:if="${buyerStatus}" th:text="${buyerStatus}"></p>
                     </div>
+
                 </div>
+                
             </section>
         </main>
     </div>

@@ -1,9 +1,9 @@
 package com.java.vintageBooks.entity;
 
-import org.springframework.data.annotation.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Queries {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Queries {
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Id
     private Integer queryid;
     private String username;
     private String email;
     private String message;
-
+    private String usertype;
 }
