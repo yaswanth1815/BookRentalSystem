@@ -14,15 +14,14 @@
             padding: 0;
         }
 
-        /* Prevent full-page scrolling across all views */
         body, html {
             height: 100vh;
             overflow: hidden;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
             background: #0b0f19;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Main viewport wrapper locked to 100vh with online image */
         .page-shell {
             height: 100vh;
             padding: 16px;
@@ -30,13 +29,12 @@
             align-items: center;
             justify-content: center;
             background:
-                linear-gradient(rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 0.9)),
+                linear-gradient(rgba(11, 15, 25, 0.82), rgba(11, 15, 25, 0.92)),
                 url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=1920&auto=format&fit=crop");
             background-size: cover;
             background-position: center;
         }
 
-        /* Single, unified app frame with rich dark-blue/indigo gradient */
         .page-box {
             width: min(1140px, 100%);
             height: calc(100vh - 32px);
@@ -44,9 +42,9 @@
             flex-direction: column;
             overflow: hidden;
             background: linear-gradient(145deg, #131a2c, #1a233d);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.8);
         }
 
         /* Universal Top Navbar */
@@ -73,16 +71,17 @@
             font-weight: 700;
             text-decoration: none;
             text-transform: uppercase;
-            transition: color 0.2s ease;
+            transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
         }
 
         nav a:hover {
-            color: #38bdf8; /* Bright Blue Accent */
+            color: #38bdf8;
         }
 
-        /* Base Content Container - keeps content inside the unscrollable box */
+        /* Base Content Container */
         .content {
-            padding: clamp(20px, 4vw, 36px);
+            padding: 12px clamp(24px, 4vw, 40px) 40px clamp(24px, 4vw, 40px);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
@@ -90,141 +89,163 @@
         }
 
         .content h1 {
-            margin-bottom: 8px;
-            font-size: clamp(2rem, 5vw, 2.8rem);
+            margin-bottom: 1px;
+            font-size: clamp(2.2rem, 4.5vw, 2.6rem);
+            font-weight: 800;
+            letter-spacing: -0.5px;
             color: #ffffff;
         }
 
-        /* Custom Scrollbars for panels or tables */
-        .table-wrap::-webkit-scrollbar {
+        .lead-text {
+            color: #94a3b8;
+            font-size: 0.98rem;
+            margin-bottom: 4px;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbars for the Grid */
+        .grid-wrap::-webkit-scrollbar {
             width: 8px;
-            height: 8px;
         }
-        .table-wrap::-webkit-scrollbar-track {
-            background: #151d30;
+        .grid-wrap::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .table-wrap::-webkit-scrollbar-thumb {
-            background: #293754;
-            border-radius: 4px;
+        .grid-wrap::-webkit-scrollbar-thumb {
+            background: #22304e;
+            border-radius: 99px;
         }
-        .table-wrap::-webkit-scrollbar-thumb:hover {
+        .grid-wrap::-webkit-scrollbar-thumb:hover {
             background: #38bdf8;
         }
 
-        /* Responsive Constraints */
         @media (max-width: 720px) {
-            .page-shell {
-                padding: 8px;
-            }
-
-            .page-box {
-                height: calc(100vh - 16px);
-            }
-
-            nav ul {
-                justify-content: flex-start;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-            }
-
-            nav a {
-                white-space: nowrap;
-            }
-
-            .content {
-                padding: 16px 12px;
-            }
+            .page-shell { padding: 8px; }
+            .page-box { height: calc(100vh - 16px); }
+            nav ul { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; padding: 12px; }
+            nav a { white-space: nowrap; }
+            .content { padding: 20px 16px; }
         }
 
         /* ==========================================================================
-           PAGE-SPECIFIC STYLES (Matching layout enhancements)
+           CARD GRID SPECIFIC DESIGN
            ========================================================================== */
-        .lead-text {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            margin-top: 4px;
-            line-height: 1.5;
-        }
-
-        /* Table container handles internal scrolling seamlessly */
-        .table-wrap {
+        .grid-wrap {
             width: 100%;
             margin-top: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            background: #151d30;
-            overflow: auto; 
+            overflow-y: auto;
             flex-grow: 1;
+            padding-right: 4px;
         }
 
-        table {
-            width: 100%;
-            min-width: 760px;
-            border-collapse: collapse;
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
         }
 
-        /* Sticky table headers */
-        th {
-            position: sticky;
-            top: 0;
-            background: #0f1626;
-            color: #fbbf24; /* Rich Gold */
-            font-size: 0.85rem;
+        /* Modern dashboard block layout */
+        .book-card {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .book-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header logic of card */
+        .book-title {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+
+        .book-author {
+            color: #94a3b8;
+            font-size: 0.88rem;
+            margin-bottom: 16px;
+        }
+
+        /* Central descriptive details grid */
+        .book-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 12px;
+            margin-bottom: 16px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            z-index: 1;
+            color: #64748b;
+            margin-bottom: 2px;
         }
 
-        th, td {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 14px;
-            text-align: center;
-            vertical-align: middle;
+        .detail-value {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            font-weight: 500;
         }
 
-        td {
-            color: #e2e8f0;
-        }
-
-        tbody tr {
-            transition: background 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background: #1e273b;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        td:nth-child(1) {
-            color: #ffffff;
+        /* Highlight types explicitly */
+        .type-badge {
+            color: #a78bfa !important; /* Rich Lavender */
             font-weight: 700;
         }
 
-        td:nth-child(5) {
-            font-weight: 700;
-            color: #a78bfa; /* Vibrant Lavender */
+        /* Bottom operational structure */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 14px;
+            margin-top: auto;
         }
 
-        /* Interactive Add to Cart button styles */
-        td a {
-            display: inline-block;
-            min-width: 110px;
-            border-radius: 6px;
-            padding: 8px 14px;
+        .book-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fbbf24; /* Rich Gold price layout */
+        }
+
+        .btn-cart {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 34px;
+            padding: 0 14px;
             background: #10b981; /* Emerald Green */
             color: #ffffff;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-decoration: none;
-            transition: transform 0.2s ease, filter 0.2s ease;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
-        td a:hover {
-            transform: translateY(-1px);
-            filter: brightness(1.2);
+        .btn-cart:hover {
+            background: #059669;
+            transform: scale(1.02);
         }
     </style>
 </head>
@@ -235,7 +256,7 @@
             <nav>
                 <ul>
                     <li><a th:href="@{/buyershome}">Home</a></li>
-                    <li><a th:href="@{/buyersbuyingabook}">Buy a Book</a></li>
+                    <li><a th:href="@{/buyingbook}">Buy a Book</a></li>
                     <li><a th:href="@{/buyersvintagebooks}">Vintage Books</a></li>
                     <li><a th:href="@{/buyerscontactus}">Contact Us</a></li>
                     <li><a th:href="@{/buyerscart}">Cart</a></li>
@@ -246,31 +267,38 @@
             <section class="content">
                 <h1>Available Books</h1>
                 <p class="lead-text">Hello, buyer. Browse books currently available for purchase, rent, or donation.</p>
-                <div class="table-wrap">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Book Name</th>
-                                <th>Author</th>
-                                <th>Pages</th>
-                                <th>Price</th>
-                                <th>Type</th>
-                                <th>Operation</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="book:{$books}">
-                                <td>The Alchemist</td>
-                                <td>Paulo Coelho</td>
-                                <td>208</td>
-                                <td>120/-</td>
-                                <td>Sell</td>
-                                <td><a href="buyercart.html">Add to Cart</a></td>
-                            </tr>
-                            
-                            
-                        </tbody>
-                    </table>
+                
+                <div class="grid-wrap">
+                    <div class="books-grid">
+                        
+                        <div class="book-card" th:each="book : ${booklist}">
+                            <div>
+                                <div class="book-title" th:text="${book.bookname}">Book Title</div>
+                                <div class="book-author" th:text="${book.author}">Author Name</div>
+                                
+                                <div class="book-details">
+                                    <div class="detail-item">
+                                        <span class="detail-label">Pages</span>
+                                        <span class="detail-value" th:text="${book.pages}">0</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Type</span>
+                                        <span class="detail-value type-badge" th:text="${book.saletype}">Buy</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Stock Left</span>
+                                        <span class="detail-value" th:text="${book.quantity}">0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="book-price" th:text="${book.price + ' /-'}">0 /-</div>
+                                <a th:href="@{/buyerscart}" class="btn-cart">Add to Cart</a>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </section>
         </main>

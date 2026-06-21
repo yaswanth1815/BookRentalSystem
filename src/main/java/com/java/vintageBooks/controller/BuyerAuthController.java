@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.java.vintageBooks.entity.Buyer;
 import com.java.vintageBooks.service.BuyerService;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -28,10 +27,6 @@ public class BuyerAuthController {
         return "buyerhome";
     }
 
-    @GetMapping("/buyersbuyingabook")
-    public String buyABook(){
-        return "buyingbook";
-    }
 
     @GetMapping("/buyersvintagebooks")
     public String vintageBook(){
@@ -78,4 +73,6 @@ public class BuyerAuthController {
         model.addAttribute("buyersigninerror","Invalid Credentials");
         return "buyersignin";
     }
+
+
 }

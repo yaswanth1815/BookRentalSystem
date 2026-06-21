@@ -10,20 +10,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="buying")
+@Table(name="sellerbooks")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Buying {
+public class ShowAllBooks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String username;
-    private String bookName;
+    private String sellername;
+    private String bookname;
     private String author;
     private String pages;
     private String price;
-    private String seller;
     private String mobile;
     private String mailid;
+    private String saletype;
+    private String quantity;
 }
