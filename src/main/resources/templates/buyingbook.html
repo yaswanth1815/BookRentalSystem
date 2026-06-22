@@ -177,11 +177,11 @@
             margin-bottom: 16px;
         }
 
-        /* Central descriptive details grid */
+        /* Central descriptive details grid (Modified to 4 slots) */
         .book-details {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px 10px;
             border-top: 1px solid rgba(255, 255, 255, 0.04);
             padding-top: 12px;
             margin-bottom: 16px;
@@ -212,6 +212,11 @@
             font-weight: 700;
         }
 
+        .price-badge {
+            color: #fbbf24 !important; /* Rich Gold */
+            font-weight: 700;
+        }
+
         /* Bottom operational structure */
         .card-footer {
             display: flex;
@@ -220,13 +225,61 @@
             border-top: 1px solid rgba(255, 255, 255, 0.04);
             padding-top: 14px;
             margin-top: auto;
+            gap: 10px;
         }
 
-        .book-price {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #fbbf24; /* Rich Gold price layout */
+        .redirected-message {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #f43f5e; /* Vibrant Rose / Coral Alert */
+    
+    /* Strict Single Line Management */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    
+    /* Clean Pill Container */
+    background: rgba(244, 63, 94, 0.08);
+    border: 1px solid rgba(244, 63, 94, 0.15);
+    padding: 6px 10px;
+    border-radius: 20px; /* Perfect pill shape */
+    
+    /* Layout Positioning */
+    flex-grow: 1;
+    max-width: 130px; /* Adjust this to fit your exact card width perfectly */
+    margin-right: 8px;
+    
+    /* Entrance Animation */
+    animation: popIn 0.25s ease-out;
+}
+
+/* Creating a live blinking status dot on the left side of the text */
+    .redirected-message::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background-color: #f43f5e;
+        border-radius: 50%;
+        flex-shrink: 0;
+        box-shadow: 0 0 8px #f43f5e;
+    }
+
+    @keyframes popIn {
+        from {
+            opacity: 0;
+            transform: scale(0.92);
         }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
 
         .btn-cart {
             display: inline-flex;
@@ -240,7 +293,11 @@
             font-weight: 700;
             text-decoration: none;
             border-radius: 6px;
+            border: none;
+            cursor: pointer;
             transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .btn-cart:hover {
@@ -289,12 +346,19 @@
                                         <span class="detail-label">Stock Left</span>
                                         <span class="detail-value" th:text="${book.quantity}">0</span>
                                     </div>
+                                    <div class="detail-item">
+                                        <span class="detail-label">Price</span>
+                                        <span class="detail-value price-badge" th:text="${book.price + ' /-'}">0 /-</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="card-footer">
-                                <div class="book-price" th:text="${book.price + ' /-'}">0 /-</div>
-                                <a th:href="@{/buyerscart}" class="btn-cart">Add to Cart</a>
+                                <p class="redirected-message" th:if="${messagebookid==book.id}" th:text="${redirectedmessage}"></p>
+                                <div th:if="${messagebookid!=book.id}" style="flex-grow: 1;"></div> <form method="post" th:action="@{/buyerscart}">
+                                    <input type="hidden" name="bookid" th:value="${book.id}">
+                                    <button class="btn-cart" type="submit">Add to Cart</button>
+                                </form>
                             </div>
                         </div>
 

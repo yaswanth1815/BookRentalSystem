@@ -1,6 +1,8 @@
 package com.java.vintageBooks.repository;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.java.vintageBooks.entity.SellerBooks;
 
@@ -10,4 +12,5 @@ public interface SellerBooksRepository extends JpaRepository<SellerBooks,Integer
     List<SellerBooks> findByAuthorContaining(String author);
     List<SellerBooks> findBySaletype(String saletype);
     List<SellerBooks> findBySellerusername(String sellerusername);
+    Optional<SellerBooks> findById(Integer id);
 }

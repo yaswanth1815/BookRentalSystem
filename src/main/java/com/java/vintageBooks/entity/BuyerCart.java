@@ -24,6 +24,6 @@ public class BuyerCart {
     private String buyerusername;
     private Integer quantity;
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="sellerbookid", referencedColumnName = "id")
     private SellerBooks sellerbooks;
 }

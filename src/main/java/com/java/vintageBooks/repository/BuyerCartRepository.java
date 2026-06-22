@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BuyerCartRepository extends JpaRepository<BuyerCart, Integer> {
 
-    List<BuyerCart> findByUsername(String username);
-    List<BuyerCart> findByNameContaining(String name);
+    List<BuyerCart> findByBuyerusername(String buyerusername);
+    BuyerCart findByBuyerusernameAndSellerbooks_Id(String buyerusername,Integer sellerbookid);
 
 }
