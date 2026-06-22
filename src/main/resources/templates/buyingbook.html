@@ -316,7 +316,7 @@
                     <li><a th:href="@{/buyingbook}">Buy a Book</a></li>
                     <li><a th:href="@{/buyersvintagebooks}">Vintage Books</a></li>
                     <li><a th:href="@{/buyerscontactus}">Contact Us</a></li>
-                    <li><a th:href="@{/buyerscart}">Cart</a></li>
+                    <li><a th:href="@{/buyerscartshow}">Cart</a></li>
                     <li><a th:href="@{/buyersprofile}">Profile</a></li>
                 </ul>
             </nav>
@@ -355,7 +355,8 @@
 
                             <div class="card-footer">
                                 <p class="redirected-message" th:if="${messagebookid==book.id}" th:text="${redirectedmessage}"></p>
-                                <div th:if="${messagebookid!=book.id}" style="flex-grow: 1;"></div> <form method="post" th:action="@{/buyerscart}">
+                                <div th:if="${messagebookid!=book.id}" style="flex-grow: 1;"></div> 
+                                <form method="post" th:action="@{/buyerscart}">
                                     <input type="hidden" name="bookid" th:value="${book.id}">
                                     <button class="btn-cart" type="submit">Add to Cart</button>
                                 </form>

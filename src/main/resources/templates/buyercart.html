@@ -11,7 +11,7 @@
             padding: 0;
         }
 
-        /* Prevent full-page scrolling */
+        /* Prevent full-page scrolling completely */
         body, html {
             height: 100vh;
             overflow: hidden;
@@ -85,8 +85,17 @@
             overflow: hidden;
         }
 
-        .content h1 {
+        /* New Side-by-Side Flex Layout Header */
+        .cart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .content h1 {
             font-size: clamp(2rem, 5vw, 2.8rem);
             color: #ffffff;
         }
@@ -94,9 +103,8 @@
         .cart-count {
             display: inline-flex;
             align-items: center;
-            align-self: flex-start;
+            align-self: center;
             gap: 10px;
-            margin-top: 4px;
             padding: 8px 16px;
             border-radius: 999px;
             background: #232d45;
@@ -118,15 +126,15 @@
             font-size: 0.85rem;
         }
 
-        /* Table container handles internal scrolling */
+        /* Table container precisely sized to show 5 rows cleanly before scrolling */
         .table-wrap {
             width: 100%;
+            height: 295px; 
             margin-top: 24px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 8px;
             background: #151d30;
             overflow: auto; 
-            flex-grow: 1;
         }
 
         table {
@@ -192,11 +200,11 @@
             transition: transform 0.2s ease, filter 0.2s ease;
         }
 
-        td:nth-child(6) a {
+        td:nth-child(7) a {
             background: #f43f5e; /* Rose Crimson */
         }
 
-        td:nth-child(7) a {
+        td:nth-child(8) a {
             background: #10b981; /* Emerald */
         }
 
@@ -244,6 +252,12 @@
                 padding: 16px 12px;
             }
 
+            .cart-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
             .cart-count {
                 width: 100%;
                 justify-content: space-between;
@@ -261,16 +275,17 @@
                     <li><a th:href="@{/buyingbook}">Buy a Book</a></li>
                     <li><a th:href="@{/buyersvintagebooks}">Vintage Books</a></li>
                     <li><a th:href="@{/buyerscontactus}">Contact Us</a></li>
-                    <li><a th:href="@{/buyerscart}">Cart</a></li>
+                    <li><a th:href="@{/buyerscartshow}">Cart</a></li>
                     <li><a th:href="@{/buyersprofile}">Profile</a></li>
                 </ul>
             </nav>
 
             <section class="content">
-                <h1>Your Cart</h1>
-                <p class="cart-count">Number of books you have added to cart: <strong>2</strong></p>
+                <div class="cart-header">
+                    <h1>Your Cart</h1>
+                    <p class="cart-count">Number of books you have added to cart: <strong th:text="${count}"></strong></p>
+                </div>
 
-                <!-- Table scrolls natively right inside the core box layout -->
                 <div class="table-wrap">
                     <table>
                         <thead>
@@ -280,22 +295,25 @@
                                 <th>Pages</th>
                                 <th>Price</th>
                                 <th>Type</th>
+                                <th>Quantity</th>
                                 <th>Operation 1</th>
                                 <th>Operation 2</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                            <tr th:each="cart:${buyerCartList}">
+                                <td th:text="${cart.sellerbooks.bookname}"></td>
+                                <td th:text="${cart.sellerbooks.author}"></td>
+                                <td th:text="${cart.sellerbooks.pages}"></td>
+                                <td th:text="${cart.sellerbooks.price}"></td>
+                                <td th:text="${cart.sellerbooks.saletype}"></td>
+                                <td th:text="${cart.quantity}"></td>
                                 <td><a href="#">Remove</a></td>
                                 <td><a href="#">Buy</a></td>
                             </tr>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
+                </div>
             </section>
         </main>
     </div>
